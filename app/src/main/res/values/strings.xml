@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FirebaseChat</string>
+    <string name="title_friend">친구</string>
+    <string name="title_chat">채팅</string>
+    <string name="title_more">더보기</string>
+
 </resources>
