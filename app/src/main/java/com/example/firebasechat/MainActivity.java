@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFriendItemSelected(Uri uri) {
+    public void onFriendItemSelected(Friend friend) {
 
     }
 

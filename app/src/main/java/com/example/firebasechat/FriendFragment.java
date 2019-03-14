@@ -4,9 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -59,20 +66,30 @@ public class FriendFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         getActivity().setTitle(R.string.title_friend);
-
+        getActivity().getActionBar().setElevation(5);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend, container, false);
+        View view = inflater.inflate(R.layout.fragment_friend, container, false);
+        if(view instanceof RecyclerView){
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            List<BaseRecyclerViewItem> data = new ArrayList<>();
+            for(int i=0; i<50; i++){
+                data.add(new Friend(2,"이름","메세지","","",""));
+            }
+            recyclerView.setAdapter(new FriendRecyclerViewAdapter(data, mListener));
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Friend friend) {
         if (mListener != null) {
-            mListener.onFriendItemSelected(uri);
+            mListener.onFriendItemSelected(friend);
         }
     }
 
@@ -105,6 +122,6 @@ public class FriendFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFriendItemSelected(Uri uri);
+        void onFriendItemSelected(Friend friend);
     }
 }
