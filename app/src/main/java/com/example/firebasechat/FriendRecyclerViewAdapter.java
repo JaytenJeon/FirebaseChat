@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -25,6 +27,11 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         switch (i){
+            case BaseRecyclerViewItem.HEADER:
+                view = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.item_friend_header, viewGroup, false);
+                return new HeaderViewHolder(view);
+
             case BaseRecyclerViewItem.CHILD:
                 view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_friend_child, viewGroup, false);
@@ -38,6 +45,40 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         BaseRecyclerViewItem item = mItems.get(i);
         switch (item.getType()){
+            case BaseRecyclerViewItem.HEADER:
+                final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+                headerViewHolder.mHeader = (FriendHeader) item;
+                String headerName = headerViewHolder.mHeader.getName();
+                if(headerName.equals("친구")){
+                    headerName = headerViewHolder.mHeader.getName() + " "+ (mItems.size() -mItems.indexOf(item)-1);
+                }
+                headerViewHolder.mTextViewHeaderName.setText(headerName);
+                headerViewHolder.mButtonExpand.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(headerViewHolder.mHeader.getChildList() == null){
+                            headerViewHolder.mHeader.setChildList(new ArrayList<Friend>());
+                            int count = 0;
+                            int pos = mItems.indexOf(headerViewHolder.mHeader);
+                            while (mItems.size() > pos+1 && mItems.get(pos+1) instanceof Friend){
+                                headerViewHolder.mHeader.getChildList().add((Friend) mItems.remove(pos+1));
+                                count++;
+                            }
+                            notifyItemRangeRemoved(pos+1, count);
+                        }else{
+                            int pos = mItems.indexOf(headerViewHolder.mHeader);
+                            int index = pos+1;
+                            for(Friend friend: headerViewHolder.mHeader.getChildList()){
+                                mItems.add(index,friend);
+                                index++;
+                            }
+                            notifyItemRangeInserted(pos+1, index - (pos+1));
+                            headerViewHolder.mHeader.setChildList(null);
+                        }
+                    }
+                });
+                break;
+
             case BaseRecyclerViewItem.CHILD:
                 final FriendViewHolder friendViewHolder = (FriendViewHolder) viewHolder;
                 friendViewHolder.mFriend = (Friend) item;
@@ -56,6 +97,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         mListener.onFriendItemSelected(friendViewHolder.mFriend);
                     }
                 });
+                break;
         }
     }
 
@@ -90,6 +132,17 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             mButtonAdd = view.findViewById(R.id.button_add);
 
             mImageViewProfile.setClipToOutline(true);
+        }
+    }
+
+    private class HeaderViewHolder extends RecyclerView.ViewHolder{
+        private FriendHeader mHeader;
+        private TextView mTextViewHeaderName;
+        private ToggleButton mButtonExpand;
+        public HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mTextViewHeaderName = itemView.findViewById(R.id.text_header_name);
+            mButtonExpand = itemView.findViewById(R.id.button_expand);
         }
     }
 }

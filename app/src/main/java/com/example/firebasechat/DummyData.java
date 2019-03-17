@@ -20,6 +20,7 @@ public class DummyData {
     };
 
     static {
+        addHeader("친구");
         Random random = new Random();
         for(String lastName: lastNames){
             for(String firstName: firstNames){
@@ -29,6 +30,15 @@ public class DummyData {
                 addFriend(name, message);
             }
         }
+    }
+
+    private static void addHeader(String name){
+        FRIEND_DATA.add(makeHeader(name));
+    }
+
+    private static FriendHeader makeHeader(String name){
+        FriendHeader header = new FriendHeader(1,name);
+        return header;
     }
 
     private static void addFriend(String name, String message){
