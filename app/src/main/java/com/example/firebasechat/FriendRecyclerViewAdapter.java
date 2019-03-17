@@ -100,6 +100,12 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
                     friendViewHolder.mTextViewStatusMessage.requestLayout();
                 }
+                if(item.getType() == BaseRecyclerViewItem.MY_PROFILE){
+                    friendViewHolder.mImageViewProfile.getLayoutParams().height = 200;
+                    friendViewHolder.mImageViewProfile.getLayoutParams().width = 200;
+                    friendViewHolder.mTextViewName.setTextSize(18);
+                }
+
 
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -17,7 +17,7 @@
         android:adjustViewBounds="true"
         android:background="@drawable/round"
         android:contentDescription="@string/dummy_string"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_menu_friend"
         android:tint="@color/colorProfile"
         android:backgroundTint="@color/colorProfileBackground"

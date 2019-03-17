@@ -20,6 +20,7 @@ public class DummyData {
     };
 
     static {
+        addFriend(BaseRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원");
         addHeader("추천 친구");
         addFriend(BaseRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!", "");
 
