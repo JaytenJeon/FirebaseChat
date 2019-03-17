@@ -15,6 +15,14 @@ public class Friend extends BaseRecyclerViewItem {
 
     }
 
+    public Friend(int type, String name) {
+        super(type, name);
+        this.mStatusMessage = null;
+        this.mPhoneNumber = null;
+        this.mProfileImg = null;
+        this.mCoverImg = null;
+    }
+
     public String getStatusMessage() {
         return mStatusMessage;
     }

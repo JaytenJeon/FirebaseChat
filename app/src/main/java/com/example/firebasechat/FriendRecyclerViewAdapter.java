@@ -101,11 +101,10 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     friendViewHolder.mTextViewStatusMessage.requestLayout();
                 }
                 if(item.getType() == BaseRecyclerViewItem.MY_PROFILE){
-                    friendViewHolder.mImageViewProfile.getLayoutParams().height = 200;
-                    friendViewHolder.mImageViewProfile.getLayoutParams().width = 200;
+                    friendViewHolder.mImageViewProfile.getLayoutParams().height = 210;
+                    friendViewHolder.mImageViewProfile.getLayoutParams().width = 210;
                     friendViewHolder.mTextViewName.setTextSize(18);
                 }
-
 
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -113,6 +112,15 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         mListener.onFriendItemSelected(friendViewHolder.mFriend);
                     }
                 });
+                Context context = friendViewHolder.mContext;
+                String profileURI = friendViewHolder.mFriend.getProfileImg();
+                if(profileURI != null){
+                    friendViewHolder.mImageViewProfile
+                            .setImageResource(context.getResources()
+                                    .getIdentifier(profileURI,"drawable",
+                                            context.getPackageName()));
+                }
+
                 break;
         }
     }
