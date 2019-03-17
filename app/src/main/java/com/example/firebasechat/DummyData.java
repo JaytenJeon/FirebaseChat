@@ -20,6 +20,12 @@ public class DummyData {
     };
 
     static {
+        addHeader("추천 친구");
+        addFriend(BaseRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!", "");
+
+        addHeader("플러스 친구");
+        addFriend(BaseRecyclerViewItem.OTHER, "플러스친구", "");
+
         addHeader("친구");
         Random random = new Random();
         for(String lastName: lastNames){
@@ -27,7 +33,7 @@ public class DummyData {
                 String name = lastName+firstName;
                 int idx = random.nextInt(messages.length);
                 String message = messages[idx];
-                addFriend(name, message);
+                addFriend(BaseRecyclerViewItem.CHILD, name, message);
             }
         }
     }
@@ -41,12 +47,12 @@ public class DummyData {
         return header;
     }
 
-    private static void addFriend(String name, String message){
-        FRIEND_DATA.add(makeFriend(name, message));
+    private static void addFriend(int type, String name, String message){
+        FRIEND_DATA.add(makeFriend(type, name, message));
     }
 
-    private static Friend makeFriend(String name, String message){
-        Friend friend = new Friend(BaseRecyclerViewItem.CHILD, name, message, "", "","");
+    private static Friend makeFriend(int type, String name, String message){
+        Friend friend = new Friend(type, name, message, "", "","");
         return friend;
     }
 }

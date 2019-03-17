@@ -7,6 +7,7 @@ abstract class BaseRecyclerViewItem implements Serializable {
     public static final int MY_PROFILE = 0;
     public static final int HEADER = 1;
     public static final int CHILD = 2;
+    public static final int OTHER = 3;
 
     private int mType;
     private String mName;

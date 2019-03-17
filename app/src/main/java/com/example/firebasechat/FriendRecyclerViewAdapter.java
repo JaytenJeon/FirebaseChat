@@ -1,6 +1,8 @@
 package com.example.firebasechat;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,13 +34,12 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                         .inflate(R.layout.item_friend_header, viewGroup, false);
                 return new HeaderViewHolder(view);
 
-            case BaseRecyclerViewItem.CHILD:
+            default:
                 view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_friend_child, viewGroup, false);
                 return new FriendViewHolder(view);
         }
 
-        return null;
     }
 
     @Override
@@ -79,7 +80,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 });
                 break;
 
-            case BaseRecyclerViewItem.CHILD:
+            default:
                 final FriendViewHolder friendViewHolder = (FriendViewHolder) viewHolder;
                 friendViewHolder.mFriend = (Friend) item;
                 friendViewHolder.mTextViewName.setText(friendViewHolder.mFriend.getName());
@@ -89,6 +90,15 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
                 }else{
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.GONE);
+                }
+
+                if(item.getType() == BaseRecyclerViewItem.OTHER){
+                    friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
+                    friendViewHolder.mTextViewStatusMessage.setBackgroundResource(R.drawable.ic_arrow_right);
+                    friendViewHolder.mTextViewStatusMessage.getBackground().setColorFilter(Color.parseColor("#AAAAAA"), PorterDuff.Mode.SRC_ATOP);
+                    friendViewHolder.mTextViewStatusMessage.getLayoutParams().height = (int) friendViewHolder.mTextViewName.getTextSize();
+
+                    friendViewHolder.mTextViewStatusMessage.requestLayout();
                 }
 
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
