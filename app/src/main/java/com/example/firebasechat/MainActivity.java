@@ -80,7 +80,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onChatItemSelected(Chat chat) {
-
+        Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+        intent.putExtra("data", chat);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter,R.anim.exit);
     }
 
 

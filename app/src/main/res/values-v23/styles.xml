@@ -9,4 +9,9 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="ChatRoomTheme" parent="Theme.AppCompat.Light">
+        <item name="android:statusBarColor">@color/colorChatRoomStatus</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
 </resources>

@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ChatRoomActivity"
+            android:theme="@style/ChatRoomTheme"
+            android:parentActivityName=".MainActivity"
+            ></activity>
+        <activity
             android:name=".FriendDetailActivity"
-            android:theme="@style/FriendDetailTheme"></activity>
+            android:theme="@style/FriendDetailTheme" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F3035</color>
     <color name="colorPrimaryDark">#3F3035</color>
     <color name="colorAccent">#fce600</color>
-
+    <color name="colorChatRoomBackground">#abc0d1</color>
+    <color name="colorChatRoomStatus">#7b90a0</color>
     <color name="colorLightGray">#efefef</color>
     <color name="colorProfileBackground">#53c6b5</color>
     <color name="colorProfile">#9edcd7</color>

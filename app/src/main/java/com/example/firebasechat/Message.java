@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Message implements Serializable {
     private Friend mUser;
@@ -25,6 +26,11 @@ public class Message implements Serializable {
 
     public String getDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(mDate);
+    }
+
+    public String getTime(){
+        SimpleDateFormat format = new SimpleDateFormat("a h:mm", Locale.KOREA);
         return format.format(mDate);
     }
 }
