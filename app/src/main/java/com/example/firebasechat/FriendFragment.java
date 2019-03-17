@@ -67,7 +67,6 @@ public class FriendFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         getActivity().setTitle(R.string.title_friend);
-        getActivity().getActionBar().setElevation(0);
     }
 
     @Override

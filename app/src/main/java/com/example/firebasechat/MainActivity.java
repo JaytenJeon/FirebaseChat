@@ -1,5 +1,6 @@
 package com.example.firebasechat;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -57,16 +58,29 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onFriendItemSelected(Friend friend) {
+        Intent intent;
+
+        switch (friend.getType()){
+            case BaseRecyclerViewItem.MY_PROFILE:
+            case BaseRecyclerViewItem.CHILD:
+                intent = new Intent(getApplicationContext(), FriendDetailActivity.class);
+                intent.putExtra("data", friend);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+
+    }
 
     @Override
     public void onChatItemSelected(Uri uri) {
 
     }
 
-    @Override
-    public void onFriendItemSelected(Friend friend) {
-
-    }
 
     @Override
     public void onMoreItemSelected(Uri uri) {

@@ -20,7 +20,7 @@ public class DummyData {
     };
 
     static {
-        addFriend(BaseRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","", "img_dummy_profile", "");
+        addFriend(BaseRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","010-0000-0000", "img_dummy_profile", "img_dummy_cover");
         addHeader("추천 친구");
         addFriend(BaseRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!");
 
@@ -34,7 +34,7 @@ public class DummyData {
                 String name = lastName+firstName;
                 int idx = random.nextInt(messages.length);
                 String message = messages[idx];
-                addFriend(BaseRecyclerViewItem.CHILD, name, message, "", null, "");
+                addFriend(BaseRecyclerViewItem.CHILD, name, message, "010-0000-0000", null, null);
             }
         }
     }

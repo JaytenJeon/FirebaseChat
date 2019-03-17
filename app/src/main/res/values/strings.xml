@@ -5,5 +5,9 @@
     <string name="title_chat">채팅</string>
     <string name="title_more">더보기</string>
 
+    <string name="label_chat">1:1 채팅</string>
+    <string name="label_chat_alone">나와의 채팅</string>
+    <string name="label_edit_profile">프로필 수정</string>
+
     <string name="dummy_string">Dummy</string>
 </resources>
