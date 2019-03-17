@@ -3,6 +3,7 @@ package com.example.firebasechat;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,7 +67,7 @@ public class FriendFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         getActivity().setTitle(R.string.title_friend);
-        getActivity().getActionBar().setElevation(5);
+        getActivity().getActionBar().setElevation(0);
     }
 
     @Override
@@ -79,6 +80,21 @@ public class FriendFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             recyclerView.setAdapter(new FriendRecyclerViewAdapter(DummyData.FRIEND_DATA, mListener));
+            final int initialTopPosition = recyclerView.getTop();
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if(recyclerView.getChildAt(0).getTop() < initialTopPosition){
+
+                        getActivity().getActionBar().setElevation(5);
+                    }else{
+                        getActivity().getActionBar().setElevation(0);
+
+
+                    }
+                }
+            });
         }
         return view;
     }
