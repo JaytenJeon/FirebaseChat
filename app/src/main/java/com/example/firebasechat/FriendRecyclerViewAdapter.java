@@ -46,6 +46,11 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 friendViewHolder.mTextViewName.setText(friendViewHolder.mFriend.getName());
 
                 friendViewHolder.mTextViewStatusMessage.setText(friendViewHolder.mFriend.getStatusMessage());
+                if(friendViewHolder.mTextViewStatusMessage.getText().length()>0){
+                    friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
+                }else{
+                    friendViewHolder.mTextViewStatusMessage.setVisibility(View.GONE);
+                }
 
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override

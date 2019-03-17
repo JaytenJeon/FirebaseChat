@@ -77,11 +77,8 @@ public class FriendFragment extends Fragment {
         if(view instanceof RecyclerView){
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            List<BaseRecyclerViewItem> data = new ArrayList<>();
-            for(int i=0; i<50; i++){
-                data.add(new Friend(2,"이름","메세지","","",""));
-            }
-            recyclerView.setAdapter(new FriendRecyclerViewAdapter(data, mListener));
+
+            recyclerView.setAdapter(new FriendRecyclerViewAdapter(DummyData.FRIEND_DATA, mListener));
         }
         return view;
     }
