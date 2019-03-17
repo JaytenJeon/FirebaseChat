@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class DummyData {
     public static final List<BaseRecyclerViewItem> FRIEND_DATA = new ArrayList<>();
+    public static final List<Chat> CHAT_DATA = new ArrayList<>();
 
     private static String[] lastNames = {"김", "남", "문", "박", "이", "정", "최", "한"};
     private static String[] firstNames = {
@@ -20,6 +21,47 @@ public class DummyData {
     };
 
     static {
+        makeFriendData();
+        makeChatData();
+    }
+
+    private static void makeChatData() {
+        List<BaseRecyclerViewItem> friends = FRIEND_DATA.subList(6,16);
+        for(BaseRecyclerViewItem friend: friends){
+            Friend user = (Friend) friend;
+            CHAT_DATA.add(makeChat(user));
+        }
+    }
+
+    private static Chat makeChat(Friend friend){
+
+        List<Friend> users = new ArrayList<>();
+        List<Message> messageList= new ArrayList<>();
+
+        users.add((Friend) FRIEND_DATA.get(0));
+        users.add(friend);
+        for(int i=0; i<20; i++){
+            if(i%2==0){
+                messageList.add(makeMessage(users.get(1)));
+            }else{
+                messageList.add(makeMessage(users.get(0)));
+            }
+        }
+
+        Chat chat = new Chat(friend.getName(), messageList, users);
+
+        return  chat;
+    }
+    private static Message makeMessage(Friend user){
+        Random random = new Random();
+        String content = messages[random.nextInt(messages.length-1)+1];
+        Message message = new Message(user, content);
+        return message;
+    }
+
+
+
+    private static void makeFriendData(){
         addFriend(BaseRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","010-0000-0000", "img_dummy_profile", "img_dummy_cover");
         addHeader("추천 친구");
         addFriend(BaseRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!");
@@ -38,6 +80,7 @@ public class DummyData {
             }
         }
     }
+
 
     private static void addHeader(String name){
         FRIEND_DATA.add(makeHeader(name));
