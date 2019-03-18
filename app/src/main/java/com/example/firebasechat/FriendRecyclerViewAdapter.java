@@ -101,9 +101,12 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     friendViewHolder.mTextViewStatusMessage.requestLayout();
                 }
                 if(item.getType() == BaseRecyclerViewItem.MY_PROFILE){
-                    friendViewHolder.mImageViewProfile.getLayoutParams().height = 210;
-                    friendViewHolder.mImageViewProfile.getLayoutParams().width = 210;
-                    friendViewHolder.mTextViewName.setTextSize(18);
+                    float scale = friendViewHolder.mContext.getResources().getDisplayMetrics().density;
+
+                    friendViewHolder.mImageViewProfile.getLayoutParams().height = (int)(scale * 44 * 1.5 + 0.5f);
+                    friendViewHolder.mImageViewProfile.getLayoutParams().width = (int)(scale * 44 * 1.5 + 0.5f);
+                    friendViewHolder.mView.requestLayout();
+                    friendViewHolder.mTextViewName.setTextSize(22);
                 }
 
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
