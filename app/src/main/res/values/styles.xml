@@ -32,6 +32,9 @@
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
 
+        <item name="android:windowAnimationStyle">@null</item>
+
+
     </style>
 
 
