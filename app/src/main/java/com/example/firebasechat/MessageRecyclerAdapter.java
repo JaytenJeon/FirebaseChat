@@ -2,7 +2,6 @@ package com.example.firebasechat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,7 @@ class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return mMessages.get(position).getUser().getType() == BaseRecyclerViewItem.MY_PROFILE?0:1;
+        return mMessages.get(position).getUser().getType() == BaseFriendRecyclerViewItem.MY_PROFILE?0:1;
     }
 
     @Override

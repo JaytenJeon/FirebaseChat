@@ -1,26 +1,27 @@
 package com.example.firebasechat;
 
-public class Friend extends BaseRecyclerViewItem {
+public class Friend {
+    private String mName;
     private String mStatusMessage;
     private String mPhoneNumber;
+    private String mEmail;
     private String mProfileImg;
     private String mCoverImg;
 
-    public Friend(int type, String name, String statusMessage, String phoneNumber, String profileImg, String coverImg) {
-        super(type,name);
-        this.mStatusMessage = statusMessage;
-        this.mPhoneNumber = phoneNumber;
-        this.mProfileImg = profileImg;
-        this.mCoverImg = coverImg;
-
+    public Friend() {
     }
 
-    public Friend(int type, String name) {
-        super(type, name);
-        this.mStatusMessage = null;
-        this.mPhoneNumber = null;
-        this.mProfileImg = null;
-        this.mCoverImg = null;
+    public Friend(String name, String statusMessage, String phoneNumber, String email, String profileImg, String coverImg) {
+        mName = name;
+        mStatusMessage = statusMessage;
+        mPhoneNumber = phoneNumber;
+        mEmail = email;
+        mProfileImg = profileImg;
+        mCoverImg = coverImg;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public String getStatusMessage() {
@@ -31,6 +32,10 @@ public class Friend extends BaseRecyclerViewItem {
         return mPhoneNumber;
     }
 
+    public String getEmail() {
+        return mEmail;
+    }
+
     public String getProfileImg() {
         return mProfileImg;
     }
@@ -39,4 +44,3 @@ public class Friend extends BaseRecyclerViewItem {
         return mCoverImg;
     }
 }
-

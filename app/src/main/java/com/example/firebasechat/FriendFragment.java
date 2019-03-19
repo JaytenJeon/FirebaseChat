@@ -2,10 +2,8 @@ package com.example.firebasechat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -139,9 +131,9 @@ public class FriendFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Friend friend) {
+    public void onButtonPressed(FriendItemChild friendItemChild) {
         if (mListener != null) {
-            mListener.onFriendItemSelected(friend);
+            mListener.onFriendItemSelected(friendItemChild);
         }
     }
 
@@ -174,6 +166,6 @@ public class FriendFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and mTextName
-        void onFriendItemSelected(Friend friend);
+        void onFriendItemSelected(FriendItemChild friendItemChild);
     }
 }

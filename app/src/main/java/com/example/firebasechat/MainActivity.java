@@ -61,14 +61,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFriendItemSelected(Friend friend) {
+    public void onFriendItemSelected(FriendItemChild friendItemChild) {
         Intent intent;
 
-        switch (friend.getType()){
-            case BaseRecyclerViewItem.MY_PROFILE:
-            case BaseRecyclerViewItem.CHILD:
+        switch (friendItemChild.getType()){
+            case BaseFriendRecyclerViewItem.MY_PROFILE:
+            case BaseFriendRecyclerViewItem.CHILD:
                 intent = new Intent(getApplicationContext(), FriendDetailActivity.class);
-                intent.putExtra("data", friend);
+                intent.putExtra("data", friendItemChild);
                 startActivity(intent);
                 break;
 

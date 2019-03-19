@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class DummyData {
-    public static final List<BaseRecyclerViewItem> FRIEND_DATA = new ArrayList<>();
+    public static final List<BaseFriendRecyclerViewItem> FRIEND_DATA = new ArrayList<>();
     public static final List<Chat> CHAT_DATA = new ArrayList<>();
 
     private static String[] lastNames = {"김", "남", "문", "박", "이", "정", "최", "한"};
@@ -26,20 +26,20 @@ public class DummyData {
     }
 
     private static void makeChatData() {
-        List<BaseRecyclerViewItem> friends = FRIEND_DATA.subList(6,16);
-        for(BaseRecyclerViewItem friend: friends){
-            Friend user = (Friend) friend;
+        List<BaseFriendRecyclerViewItem> friends = FRIEND_DATA.subList(6,16);
+        for(BaseFriendRecyclerViewItem friend: friends){
+            FriendItemChild user = (FriendItemChild) friend;
             CHAT_DATA.add(makeChat(user));
         }
     }
 
-    private static Chat makeChat(Friend friend){
+    private static Chat makeChat(FriendItemChild friendItemChild){
 
-        List<Friend> users = new ArrayList<>();
+        List<FriendItemChild> users = new ArrayList<>();
         List<Message> messageList= new ArrayList<>();
 
-        users.add((Friend) FRIEND_DATA.get(0));
-        users.add(friend);
+        users.add((FriendItemChild) FRIEND_DATA.get(0));
+        users.add(friendItemChild);
         for(int i=0; i<20; i++){
             if(i%2==0){
                 messageList.add(makeMessage(users.get(1)));
@@ -48,11 +48,11 @@ public class DummyData {
             }
         }
 
-        Chat chat = new Chat(friend.getName(), messageList, users);
+        Chat chat = new Chat(friendItemChild.getName(), messageList, users);
 
         return  chat;
     }
-    private static Message makeMessage(Friend user){
+    private static Message makeMessage(FriendItemChild user){
         Random random = new Random();
         String content = messages[random.nextInt(messages.length-1)+1];
         Message message = new Message(user, content);
@@ -62,12 +62,12 @@ public class DummyData {
 
 
     private static void makeFriendData(){
-        addFriend(BaseRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","010-0000-0000", "img_dummy_profile", "img_dummy_cover");
+        addFriend(BaseFriendRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","010-0000-0000", "img_dummy_profile", "img_dummy_cover");
         addHeader("추천 친구");
-        addFriend(BaseRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!");
+        addFriend(BaseFriendRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!");
 
         addHeader("플러스 친구");
-        addFriend(BaseRecyclerViewItem.OTHER, "플러스친구");
+        addFriend(BaseFriendRecyclerViewItem.OTHER, "플러스친구");
 
         addHeader("친구");
         Random random = new Random();
@@ -76,7 +76,7 @@ public class DummyData {
                 String name = lastName+firstName;
                 int idx = random.nextInt(messages.length);
                 String message = messages[idx];
-                addFriend(BaseRecyclerViewItem.CHILD, name, message, "010-0000-0000", null, null);
+                addFriend(BaseFriendRecyclerViewItem.CHILD, name, message, "010-0000-0000", null, null);
             }
         }
     }
@@ -86,28 +86,33 @@ public class DummyData {
         FRIEND_DATA.add(makeHeader(name));
     }
 
-    private static FriendHeader makeHeader(String name){
-        FriendHeader header = new FriendHeader(1,name);
+    private static FriendItemHeader makeHeader(String name){
+        FriendItemHeader header = new FriendItemHeader(1,name);
         return header;
     }
 
     private static void addFriend(int type, String name){
-        FRIEND_DATA.add(makeFriend(type, name));
+        FRIEND_DATA.add(makeFriendItemChild(type, name));
     }
 
     private static void addFriend(int type, String name, String message, String phoneNumber,
                                   String profileImage, String coverImage){
-        FRIEND_DATA.add(makeFriend(type, name, message, phoneNumber, profileImage,coverImage));
+        FRIEND_DATA.add(makeFriendItemChild(type, name, message, phoneNumber, profileImage,coverImage));
     }
 
-    private static Friend makeFriend(int type, String name){
-        Friend friend = new Friend(type, name);
-        return friend;
+    private static FriendItemChild makeFriendItemChild(int type, String name){
+
+        Friend friend = new Friend(name, null, null, null, null, null);
+        FriendItemChild friendItemChild = new FriendItemChild(type, friend);
+        return friendItemChild;
     }
 
-    private static Friend makeFriend(int type, String name, String message, String phoneNumber,
-                                     String profileImage, String coverImage){
-        Friend friend = new Friend(type, name, message, phoneNumber, profileImage,coverImage);
-        return friend;
+    private static FriendItemChild makeFriendItemChild(int type, String name, String message, String phoneNumber,
+                                                       String profileImage, String coverImage){
+
+        Friend friend = new Friend(name, message, phoneNumber, "", profileImage, coverImage);
+        FriendItemChild friendItemChild = new FriendItemChild(type,friend);
+        return friendItemChild;
     }
+
 }

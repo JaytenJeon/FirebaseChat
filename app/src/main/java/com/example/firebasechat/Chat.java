@@ -1,20 +1,19 @@
 package com.example.firebasechat;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 class Chat implements Serializable {
-    private List<Friend> mUsers;
+    private List<FriendItemChild> mUsers;
     private String mName;
     private List<Message> mMessages;
-    public Chat(String name, List<Message> messages, List<Friend> users){
+    public Chat(String name, List<Message> messages, List<FriendItemChild> users){
         this.mName = name;
         this.mMessages = messages;
         this.mUsers = users;
     }
 
-    public List<Friend> getUsers() {
+    public List<FriendItemChild> getUsers() {
         return mUsers;
     }
 

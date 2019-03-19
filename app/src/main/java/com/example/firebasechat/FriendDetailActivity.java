@@ -58,21 +58,21 @@ public class FriendDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_detail);
 
         Intent intent = getIntent();
-        Friend friend = (Friend) intent.getSerializableExtra("data");
+        FriendItemChild friendItemChild = (FriendItemChild) intent.getSerializableExtra("data");
         mTextName = findViewById(R.id.text_name);
         mTextStatusMessage = findViewById(R.id.profileStatusMessage);
         mImageProfile = findViewById(R.id.image_profile);
-        mTextName.setText(friend.getName());
-        mTextStatusMessage.setText(friend.getStatusMessage());
+        mTextName.setText(friendItemChild.getName());
+        mTextStatusMessage.setText(friendItemChild.getStatusMessage());
         textPhoneNumber = findViewById(R.id.text_phone_number);
-        textPhoneNumber.setText(friend.getPhoneNumber());
+        textPhoneNumber.setText(friendItemChild.getPhoneNumber());
         mImageCover = findViewById(R.id.image_cover);
 
-        if(friend.getProfileImg() != null){
-            mImageProfile.setImageResource(getResources().getIdentifier(friend.getProfileImg(),"drawable", getPackageName()));
+        if(friendItemChild.getProfileImg() != null){
+            mImageProfile.setImageResource(getResources().getIdentifier(friendItemChild.getProfileImg(),"drawable", getPackageName()));
         }
-        if(friend.getCoverImg() != null){
-            mImageCover.setImageResource(getResources().getIdentifier(friend.getCoverImg(),"drawable", getPackageName()));
+        if(friendItemChild.getCoverImg() != null){
+            mImageCover.setImageResource(getResources().getIdentifier(friendItemChild.getCoverImg(),"drawable", getPackageName()));
 
         }
 
@@ -90,8 +90,8 @@ public class FriendDetailActivity extends AppCompatActivity {
             }
         });
 
-        switch (friend.getType()){
-            case BaseRecyclerViewItem.CHILD:
+        switch (friendItemChild.getType()){
+            case BaseFriendRecyclerViewItem.CHILD:
                 mLabelChat.setText(R.string.label_chat);
                 mButtonEditProfile.setVisibility(View.GONE);
                 mLabelEditProfile.setVisibility(View.GONE);

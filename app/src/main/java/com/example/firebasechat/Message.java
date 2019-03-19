@@ -7,16 +7,16 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Message implements Serializable {
-    private Friend mUser;
+    private FriendItemChild mUser;
     private String mContent;
     private Date mDate;
-    public Message(Friend user, String content){
+    public Message(FriendItemChild user, String content){
         this.mUser = user;
         this.mContent = content;
         this.mDate = Calendar.getInstance().getTime();
     }
 
-    public Friend getUser() {
+    public FriendItemChild getUser() {
         return mUser;
     }
 
