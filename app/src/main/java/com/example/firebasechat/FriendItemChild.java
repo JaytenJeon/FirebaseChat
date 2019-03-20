@@ -7,9 +7,9 @@ public class FriendItemChild extends BaseFriendRecyclerViewItem {
     private String mPhoneNumber;
     private Uri mProfileImg;
     private Uri mCoverImg;
-    private Friend mFriend;
+    private User mFriend;
 
-    public FriendItemChild(int type, Friend friend) {
+    public FriendItemChild(int type, User friend) {
         super(type,friend.getName());
         this.mStatusMessage = friend.getStatusMessage();
         this.mPhoneNumber = friend.getPhoneNumber();

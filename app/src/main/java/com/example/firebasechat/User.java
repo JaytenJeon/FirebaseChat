@@ -2,7 +2,7 @@ package com.example.firebasechat;
 
 import android.net.Uri;
 
-public class Friend {
+public class User {
     private String mName;
     private String mStatusMessage;
     private String mPhoneNumber;
@@ -10,10 +10,10 @@ public class Friend {
     private Uri mProfileImg;
     private Uri mCoverImg;
 
-    public Friend() {
+    public User() {
     }
 
-    public Friend(String name, String statusMessage, String phoneNumber, String email, Uri profileImg, Uri coverImg) {
+    public User(String name, String statusMessage, String phoneNumber, String email, Uri profileImg, Uri coverImg) {
         mName = name;
         mStatusMessage = statusMessage;
         mPhoneNumber = phoneNumber;

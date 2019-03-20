@@ -104,7 +104,7 @@ public class DummyData {
 
     private static FriendItemChild makeFriendItemChild(int type, String name){
 
-        Friend friend = new Friend(name, null, null, null, null, null);
+        User friend = new User(name, null, null, null, null, null);
         FriendItemChild friendItemChild = new FriendItemChild(type, friend);
         return friendItemChild;
     }
@@ -112,7 +112,7 @@ public class DummyData {
     private static FriendItemChild makeFriendItemChild(int type, String name, String message,
                                                        String phoneNumber, Uri uri){
 
-        Friend friend = new Friend(name, message, phoneNumber, null, uri, null);
+        User friend = new User(name, message, phoneNumber, null, uri, null);
         FriendItemChild friendItemChild = new FriendItemChild(type,friend);
         return friendItemChild;
     }

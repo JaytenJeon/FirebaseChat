@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -52,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                Friend user = new Friend(firebaseUser.getDisplayName(), null, firebaseUser.getPhoneNumber(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl(), null);
+                User user = new User(firebaseUser.getDisplayName(), null, firebaseUser.getPhoneNumber(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl(), null);
                 // ...
             } else {
                 // Sign in failed
