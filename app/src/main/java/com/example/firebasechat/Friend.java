@@ -1,17 +1,19 @@
 package com.example.firebasechat;
 
+import android.net.Uri;
+
 public class Friend {
     private String mName;
     private String mStatusMessage;
     private String mPhoneNumber;
     private String mEmail;
-    private String mProfileImg;
-    private String mCoverImg;
+    private Uri mProfileImg;
+    private Uri mCoverImg;
 
     public Friend() {
     }
 
-    public Friend(String name, String statusMessage, String phoneNumber, String email, String profileImg, String coverImg) {
+    public Friend(String name, String statusMessage, String phoneNumber, String email, Uri profileImg, Uri coverImg) {
         mName = name;
         mStatusMessage = statusMessage;
         mPhoneNumber = phoneNumber;
@@ -36,11 +38,11 @@ public class Friend {
         return mEmail;
     }
 
-    public String getProfileImg() {
+    public Uri getProfileImg() {
         return mProfileImg;
     }
 
-    public String getCoverImg() {
+    public Uri getCoverImg() {
         return mCoverImg;
     }
 }

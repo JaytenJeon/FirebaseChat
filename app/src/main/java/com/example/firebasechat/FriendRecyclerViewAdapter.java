@@ -3,6 +3,7 @@ package com.example.firebasechat;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -116,12 +117,10 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     }
                 });
                 Context context = friendViewHolder.mContext;
-                String profileURI = friendViewHolder.mFriendItemChild.getProfileImg();
+                Uri profileURI = friendViewHolder.mFriendItemChild.getProfileImg();
                 if(profileURI != null){
-                    friendViewHolder.mImageViewProfile
-                            .setImageResource(context.getResources()
-                                    .getIdentifier(profileURI,"drawable",
-                                            context.getPackageName()));
+                    friendViewHolder.mImageViewProfile.setImageURI(profileURI);
+
                 }
 
                 break;

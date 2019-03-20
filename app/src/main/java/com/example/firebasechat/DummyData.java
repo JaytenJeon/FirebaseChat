@@ -1,5 +1,8 @@
 package com.example.firebasechat;
 
+
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -62,7 +65,7 @@ public class DummyData {
 
 
     private static void makeFriendData(){
-        addFriend(BaseFriendRecyclerViewItem.MY_PROFILE, "김도윤","김도윤 1만원/ 남도현 2만원","010-0000-0000", "img_dummy_profile", "img_dummy_cover");
+        addFriend(BaseFriendRecyclerViewItem.MY_PROFILE, "김도윤", "김도윤 1만원/ 남도현 2만원", "010-0000-0000", null);
         addHeader("추천 친구");
         addFriend(BaseFriendRecyclerViewItem.OTHER, "새로운 친구를 만나보세요!");
 
@@ -76,7 +79,7 @@ public class DummyData {
                 String name = lastName+firstName;
                 int idx = random.nextInt(messages.length);
                 String message = messages[idx];
-                addFriend(BaseFriendRecyclerViewItem.CHILD, name, message, "010-0000-0000", null, null);
+                addFriend(BaseFriendRecyclerViewItem.CHILD, name, message, "010-0000-0000", null);
             }
         }
     }
@@ -95,9 +98,8 @@ public class DummyData {
         FRIEND_DATA.add(makeFriendItemChild(type, name));
     }
 
-    private static void addFriend(int type, String name, String message, String phoneNumber,
-                                  String profileImage, String coverImage){
-        FRIEND_DATA.add(makeFriendItemChild(type, name, message, phoneNumber, profileImage,coverImage));
+    private static void addFriend(int type, String name, String message, String phoneNumber, Uri uri){
+        FRIEND_DATA.add(makeFriendItemChild(type, name, message, phoneNumber, uri));
     }
 
     private static FriendItemChild makeFriendItemChild(int type, String name){
@@ -107,10 +109,10 @@ public class DummyData {
         return friendItemChild;
     }
 
-    private static FriendItemChild makeFriendItemChild(int type, String name, String message, String phoneNumber,
-                                                       String profileImage, String coverImage){
+    private static FriendItemChild makeFriendItemChild(int type, String name, String message,
+                                                       String phoneNumber, Uri uri){
 
-        Friend friend = new Friend(name, message, phoneNumber, "", profileImage, coverImage);
+        Friend friend = new Friend(name, message, phoneNumber, null, uri, null);
         FriendItemChild friendItemChild = new FriendItemChild(type,friend);
         return friendItemChild;
     }

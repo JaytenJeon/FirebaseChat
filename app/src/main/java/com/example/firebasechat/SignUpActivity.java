@@ -51,8 +51,8 @@ public class SignUpActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                Friend user = new Friend(firebaseUser.getDisplayName(), null, firebaseUser.getPhoneNumber(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl(), null);
                 // ...
             } else {
                 // Sign in failed

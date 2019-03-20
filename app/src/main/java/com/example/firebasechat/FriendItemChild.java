@@ -1,10 +1,12 @@
 package com.example.firebasechat;
 
+import android.net.Uri;
+
 public class FriendItemChild extends BaseFriendRecyclerViewItem {
     private String mStatusMessage;
     private String mPhoneNumber;
-    private String mProfileImg;
-    private String mCoverImg;
+    private Uri mProfileImg;
+    private Uri mCoverImg;
     private Friend mFriend;
 
     public FriendItemChild(int type, Friend friend) {
@@ -25,11 +27,11 @@ public class FriendItemChild extends BaseFriendRecyclerViewItem {
         return mPhoneNumber;
     }
 
-    public String getProfileImg() {
+    public Uri getProfileImg() {
         return mProfileImg;
     }
 
-    public String getCoverImg() {
+    public Uri getCoverImg() {
         return mCoverImg;
     }
 }

@@ -68,11 +68,13 @@ public class FriendDetailActivity extends AppCompatActivity {
         textPhoneNumber.setText(friendItemChild.getPhoneNumber());
         mImageCover = findViewById(R.id.image_cover);
 
+
+
         if(friendItemChild.getProfileImg() != null){
-            mImageProfile.setImageResource(getResources().getIdentifier(friendItemChild.getProfileImg(),"drawable", getPackageName()));
+            mImageProfile.setImageURI(friendItemChild.getProfileImg());
         }
         if(friendItemChild.getCoverImg() != null){
-            mImageCover.setImageResource(getResources().getIdentifier(friendItemChild.getCoverImg(),"drawable", getPackageName()));
+            mImageCover.setImageURI(friendItemChild.getCoverImg());
 
         }
 
