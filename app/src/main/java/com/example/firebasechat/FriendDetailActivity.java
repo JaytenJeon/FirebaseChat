@@ -58,7 +58,8 @@ public class FriendDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_detail);
 
         Intent intent = getIntent();
-        FriendItemChild friendItemChild = (FriendItemChild) intent.getSerializableExtra("data");
+        User friendItemChild = (User) intent.getSerializableExtra("data");
+        int type = (int) intent.getIntExtra("type",-1);
         mTextName = findViewById(R.id.text_name);
         mTextStatusMessage = findViewById(R.id.profileStatusMessage);
         mImageProfile = findViewById(R.id.image_profile);
@@ -92,11 +93,14 @@ public class FriendDetailActivity extends AppCompatActivity {
             }
         });
 
-        switch (friendItemChild.getType()){
-            case BaseFriendRecyclerViewItem.CHILD:
+        switch (type){
+            case FriendRecyclerViewAdapter.MY_PROFILE:
+                break;
+            default:
                 mLabelChat.setText(R.string.label_chat);
                 mButtonEditProfile.setVisibility(View.GONE);
                 mLabelEditProfile.setVisibility(View.GONE);
+                break;
         }
 
 

@@ -18,9 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<BaseFriendRecyclerViewItem> mItems;
+    public static final int MY_PROFILE = 0;
+    public static final int HEADER = 1;
+    public static final int OTHER = 2;
+
+
+    private List<User> mItems;
     private FriendFragment.OnFragmentInteractionListener mListener;
-    public FriendRecyclerViewAdapter(List<BaseFriendRecyclerViewItem> items, FriendFragment.OnFragmentInteractionListener listener) {
+    public FriendRecyclerViewAdapter(List<User> items, FriendFragment.OnFragmentInteractionListener listener) {
         mItems = items;
         mListener = listener;
     }
@@ -30,7 +35,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         switch (i){
-            case BaseFriendRecyclerViewItem.HEADER:
+            case HEADER:
                 view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_friend_header, viewGroup, false);
                 return new HeaderViewHolder(view);
@@ -44,12 +49,12 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        BaseFriendRecyclerViewItem item = mItems.get(i);
-        switch (item.getType()){
-            case BaseFriendRecyclerViewItem.HEADER:
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        User item = mItems.get(position);
+        switch (getItemViewType(position)){
+            case HEADER:
                 final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
-                headerViewHolder.mHeader = (FriendItemHeader) item;
+                headerViewHolder.mHeader = (FriendRecyclerHeader) item;
                 String headerName = headerViewHolder.mHeader.getName();
                 if(headerName.equals("친구")){
                     headerName = headerViewHolder.mHeader.getName() + " "+ (mItems.size() -mItems.indexOf(item)-1);
@@ -59,19 +64,19 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     @Override
                     public void onClick(View v) {
                         if(headerViewHolder.mHeader.getChildList() == null){
-                            headerViewHolder.mHeader.setChildList(new ArrayList<FriendItemChild>());
+                            headerViewHolder.mHeader.setChildList(new ArrayList<User>());
                             int count = 0;
                             int pos = mItems.indexOf(headerViewHolder.mHeader);
-                            while (mItems.size() > pos+1 && mItems.get(pos+1) instanceof FriendItemChild){
-                                headerViewHolder.mHeader.getChildList().add((FriendItemChild) mItems.remove(pos+1));
+                            while (mItems.size() > pos+1 && mItems.get(pos+1) instanceof User){
+                                headerViewHolder.mHeader.getChildList().add((User) mItems.remove(pos+1));
                                 count++;
                             }
                             notifyItemRangeRemoved(pos+1, count);
                         }else{
                             int pos = mItems.indexOf(headerViewHolder.mHeader);
                             int index = pos+1;
-                            for(FriendItemChild friendItemChild : headerViewHolder.mHeader.getChildList()){
-                                mItems.add(index, friendItemChild);
+                            for(User user : headerViewHolder.mHeader.getChildList()){
+                                mItems.add(index, user);
                                 index++;
                             }
                             notifyItemRangeInserted(pos+1, index - (pos+1));
@@ -83,17 +88,17 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
             default:
                 final FriendViewHolder friendViewHolder = (FriendViewHolder) viewHolder;
-                friendViewHolder.mFriendItemChild = (FriendItemChild) item;
-                friendViewHolder.mTextViewName.setText(friendViewHolder.mFriendItemChild.getName());
+                friendViewHolder.mItem = (User) item;
+                friendViewHolder.mTextViewName.setText(friendViewHolder.mItem.getName());
 
-                friendViewHolder.mTextViewStatusMessage.setText(friendViewHolder.mFriendItemChild.getStatusMessage());
+                friendViewHolder.mTextViewStatusMessage.setText(friendViewHolder.mItem.getStatusMessage());
                 if(friendViewHolder.mTextViewStatusMessage.getText().length()>0){
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
                 }else{
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.GONE);
                 }
 
-                if(item.getType() == BaseFriendRecyclerViewItem.OTHER){
+                if(getItemViewType(position) == OTHER){
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
                     friendViewHolder.mTextViewStatusMessage.setBackgroundResource(R.drawable.ic_arrow_right);
                     friendViewHolder.mTextViewStatusMessage.getBackground().setColorFilter(Color.parseColor("#AAAAAA"), PorterDuff.Mode.SRC_ATOP);
@@ -101,7 +106,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
                     friendViewHolder.mTextViewStatusMessage.requestLayout();
                 }
-                if(item.getType() == BaseFriendRecyclerViewItem.MY_PROFILE){
+                if(getItemViewType(position) == MY_PROFILE){
                     float scale = friendViewHolder.mContext.getResources().getDisplayMetrics().density;
 
                     friendViewHolder.mImageViewProfile.getLayoutParams().height = (int)(scale * 44 * 1.5 + 0.5f);
@@ -113,11 +118,11 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.onFriendItemSelected(friendViewHolder.mFriendItemChild);
+                        mListener.onFriendItemSelected(friendViewHolder.mItem, getItemViewType(position));
                     }
                 });
                 Context context = friendViewHolder.mContext;
-                Uri profileURI = friendViewHolder.mFriendItemChild.getProfileImg();
+                Uri profileURI = friendViewHolder.mItem.getProfileImg();
                 if(profileURI != null){
                     friendViewHolder.mImageViewProfile.setImageURI(profileURI);
 
@@ -134,7 +139,21 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        return mItems.get(position).getType();
+        switch (position){
+            case 0:
+                return MY_PROFILE;
+
+            case 1:
+            case 3:
+            case 5:
+                return HEADER;
+
+            case 2:
+            case 4:
+                return OTHER;
+            default:
+                return position;
+        }
     }
 
 
@@ -143,10 +162,10 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
         private View mView;
         private ImageView mImageViewProfile;
-        private  TextView mTextViewName;
+        private TextView mTextViewName;
         private TextView mTextViewStatusMessage;
         private ImageButton mButtonAdd;
-        private FriendItemChild mFriendItemChild;
+        private User mItem;
 
         public FriendViewHolder(View view) {
             super(view);
@@ -162,7 +181,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
-        private FriendItemHeader mHeader;
+        private FriendRecyclerHeader mHeader;
         private TextView mTextViewHeaderName;
         private ToggleButton mButtonExpand;
         public HeaderViewHolder(@NonNull View itemView) {

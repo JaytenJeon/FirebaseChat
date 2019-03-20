@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -45,20 +48,20 @@ class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myMessageViewHolder.mTextTime.requestLayout();
                 break;
             default:
-                MessageViewHolder messageViewHoloder = (MessageViewHolder) viewHolder;
-                messageViewHoloder.mImageProfile.setClipToOutline(true);
-                messageViewHoloder.mTextName.setText(message.getUser().getName());
-                messageViewHoloder.mTextMessage.setText(message.getContent());
-                messageViewHoloder.mTextMessage.requestLayout();
-                messageViewHoloder.mTextTime.setText(message.getTime());
-                messageViewHoloder.mTextTime.requestLayout();
+                MessageViewHolder messageViewHolder = (MessageViewHolder) viewHolder;
+                messageViewHolder.mImageProfile.setClipToOutline(true);
+                messageViewHolder.mTextName.setText(message.getUser().getName());
+                messageViewHolder.mTextMessage.setText(message.getContent());
+                messageViewHolder.mTextMessage.requestLayout();
+                messageViewHolder.mTextTime.setText(message.getTime());
+                messageViewHolder.mTextTime.requestLayout();
                 break;
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mMessages.get(position).getUser().getType() == BaseFriendRecyclerViewItem.MY_PROFILE?0:1;
+        return mMessages.get(position).getUser().getEmail() == FirebaseAuth.getInstance().getCurrentUser().getEmail() ?0:1;
     }
 
     @Override

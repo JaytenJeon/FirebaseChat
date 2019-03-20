@@ -131,11 +131,11 @@ public class FriendFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(FriendItemChild friendItemChild) {
-        if (mListener != null) {
-            mListener.onFriendItemSelected(friendItemChild);
-        }
-    }
+//    public void onButtonPressed(User user) {
+//        if (mListener != null) {
+//            mListener.onFriendItemSelected(user);
+//        }
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -166,6 +166,7 @@ public class FriendFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and mTextName
-        void onFriendItemSelected(FriendItemChild friendItemChild);
+
+        void onFriendItemSelected(User item, int type);
     }
 }

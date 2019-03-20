@@ -2,7 +2,9 @@ package com.example.firebasechat;
 
 import android.net.Uri;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String mName;
     private String mStatusMessage;
     private String mPhoneNumber;
