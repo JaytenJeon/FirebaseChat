@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +18,14 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
@@ -37,6 +45,10 @@ public class FriendFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FirebaseFirestore mFirestore;
+    private FirebaseUser mUser;
+    private FriendRecyclerViewAdapter mAdapter;
+    private Query mQuery;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,6 +66,8 @@ public class FriendFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static FriendFragment newInstance(String param1, String param2) {
+
+
         FriendFragment fragment = new FriendFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -89,6 +103,12 @@ public class FriendFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -97,6 +117,13 @@ public class FriendFragment extends Fragment {
         }
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.title_friend);
+
+        mFirestore = FirebaseFirestore.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mQuery = mFirestore.collection("users")
+                .whereEqualTo("friends."+mUser.getUid(), true);
+
+
     }
 
 
@@ -109,8 +136,11 @@ public class FriendFragment extends Fragment {
         if(view instanceof RecyclerView){
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            recyclerView.setAdapter(new FriendRecyclerViewAdapter(DummyData.FRIEND_DATA, mListener));
+            if(mAdapter == null){
+                mAdapter = new FriendRecyclerViewAdapter(mQuery, mListener);
+                mAdapter.startListening();
+            }
+            recyclerView.setAdapter(mAdapter);
             final int initialTopPosition = recyclerView.getTop();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

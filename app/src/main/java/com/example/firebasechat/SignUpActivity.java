@@ -71,7 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
                                     DocumentSnapshot document= task.getResult();
                                     if(document.exists()){
                                         Toast.makeText(getApplicationContext(),"로그인 성공", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        intent.putExtra("userProfile",document.toObject(User.class));
+                                        startActivity(intent);
                                         finish();
                                     }else{
                                         db.collection("users")
@@ -81,7 +83,9 @@ public class SignUpActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         Toast.makeText(getApplicationContext(),"회원가입 성공", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                        intent.putExtra("userProfile",user);
+                                                        startActivity(intent);
                                                         finish();
                                                     }
                                                 });

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
     public static final int MY_PROFILE = 0;
     public static final int HEADER = 1;
     public static final int OTHER = 2;
 
-
-    private List<User> mItems;
     private FriendFragment.OnFragmentInteractionListener mListener;
-    public FriendRecyclerViewAdapter(List<User> items, FriendFragment.OnFragmentInteractionListener listener) {
-        mItems = items;
+    private List<User> mDefaultList;
+
+    public FriendRecyclerViewAdapter(Query query,  FriendFragment.OnFragmentInteractionListener listener) {
+        super(query);
         mListener = listener;
+        mDefaultList = new ArrayList<>();
+        mDefaultList.add(MainActivity.USER_PROFILE);
+        mDefaultList.add(new FriendRecyclerHeader("친구"));
+
     }
 
     @NonNull
@@ -50,38 +63,44 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        User item = mItems.get(position);
+
+        User item;
+        if(position<2){
+            item = mDefaultList.get(position);
+        }else{
+            item = getSnapshot(position - 2).toObject(User.class);
+        }
         switch (getItemViewType(position)){
             case HEADER:
                 final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
                 headerViewHolder.mHeader = (FriendRecyclerHeader) item;
                 String headerName = headerViewHolder.mHeader.getName();
                 if(headerName.equals("친구")){
-                    headerName = headerViewHolder.mHeader.getName() + " "+ (mItems.size() -mItems.indexOf(item)-1);
+                    headerName = headerViewHolder.mHeader.getName() +" "+ (getItemCount() - 2);
                 }
                 headerViewHolder.mTextViewHeaderName.setText(headerName);
                 headerViewHolder.mButtonExpand.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(headerViewHolder.mHeader.getChildList() == null){
-                            headerViewHolder.mHeader.setChildList(new ArrayList<User>());
-                            int count = 0;
-                            int pos = mItems.indexOf(headerViewHolder.mHeader);
-                            while (mItems.size() > pos+1 && mItems.get(pos+1) instanceof User){
-                                headerViewHolder.mHeader.getChildList().add((User) mItems.remove(pos+1));
-                                count++;
-                            }
-                            notifyItemRangeRemoved(pos+1, count);
-                        }else{
-                            int pos = mItems.indexOf(headerViewHolder.mHeader);
-                            int index = pos+1;
-                            for(User user : headerViewHolder.mHeader.getChildList()){
-                                mItems.add(index, user);
-                                index++;
-                            }
-                            notifyItemRangeInserted(pos+1, index - (pos+1));
-                            headerViewHolder.mHeader.setChildList(null);
-                        }
+//                        if(headerViewHolder.mHeader.getChildList() == null){
+//                            headerViewHolder.mHeader.setChildList(new ArrayList<User>());
+//                            int count = 0;
+//                            int pos = mItems.indexOf(headerViewHolder.mHeader);
+//                            while (mItems.size() > pos+1 && mItems.get(pos+1) instanceof User){
+//                                headerViewHolder.mHeader.getChildList().add((User) mItems.remove(pos+1));
+//                                count++;
+//                            }
+//                            notifyItemRangeRemoved(pos+1, count);
+//                        }else{
+//                            int pos = mItems.indexOf(headerViewHolder.mHeader);
+//                            int index = pos+1;
+//                            for(User user : headerViewHolder.mHeader.getChildList()){
+//                                mItems.add(index, user);
+//                                index++;
+//                            }
+//                            notifyItemRangeInserted(pos+1, index - (pos+1));
+//                            headerViewHolder.mHeader.setChildList(null);
+//                        }
                     }
                 });
                 break;
@@ -98,14 +117,14 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     friendViewHolder.mTextViewStatusMessage.setVisibility(View.GONE);
                 }
 
-                if(getItemViewType(position) == OTHER){
-                    friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
-                    friendViewHolder.mTextViewStatusMessage.setBackgroundResource(R.drawable.ic_arrow_right);
-                    friendViewHolder.mTextViewStatusMessage.getBackground().setColorFilter(Color.parseColor("#AAAAAA"), PorterDuff.Mode.SRC_ATOP);
-                    friendViewHolder.mTextViewStatusMessage.getLayoutParams().height = (int) friendViewHolder.mTextViewName.getTextSize();
-
-                    friendViewHolder.mTextViewStatusMessage.requestLayout();
-                }
+//                if(getItemViewType(position) == OTHER){
+//                    friendViewHolder.mTextViewStatusMessage.setVisibility(View.VISIBLE);
+//                    friendViewHolder.mTextViewStatusMessage.setBackgroundResource(R.drawable.ic_arrow_right);
+//                    friendViewHolder.mTextViewStatusMessage.getBackground().setColorFilter(Color.parseColor("#AAAAAA"), PorterDuff.Mode.SRC_ATOP);
+//                    friendViewHolder.mTextViewStatusMessage.getLayoutParams().height = (int) friendViewHolder.mTextViewName.getTextSize();
+//
+//                    friendViewHolder.mTextViewStatusMessage.requestLayout();
+//                }
                 if(getItemViewType(position) == MY_PROFILE){
                     float scale = friendViewHolder.mContext.getResources().getDisplayMetrics().density;
 
@@ -134,7 +153,7 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return super.getItemCount() + mDefaultList.size();
     }
 
     @Override
@@ -144,13 +163,8 @@ public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 return MY_PROFILE;
 
             case 1:
-            case 3:
-            case 5:
                 return HEADER;
 
-            case 2:
-            case 4:
-                return OTHER;
             default:
                 return position;
         }

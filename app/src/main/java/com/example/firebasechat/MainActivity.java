@@ -13,10 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity
         implements FriendFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
         MoreFragment.OnFragmentInteractionListener{
+    public static User USER_PROFILE;
+
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
 
@@ -52,11 +60,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        USER_PROFILE = (User) intent.getSerializableExtra("userProfile");
+
         mToolbar = findViewById(R.id.toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        replaceFragment(mFriendFragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container,mFriendFragment).commit();
+
 
     }
 
@@ -98,5 +112,6 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+
     }
 }

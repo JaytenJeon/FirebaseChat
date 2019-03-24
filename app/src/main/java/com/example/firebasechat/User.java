@@ -5,46 +5,46 @@ import android.net.Uri;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String mName;
-    private String mStatusMessage;
-    private String mPhoneNumber;
-    private String mEmail;
-    private Uri mProfileImg;
-    private Uri mCoverImg;
+    private String name;
+    private String statusMessage;
+    private String phoneNumber;
+    private String email;
+    private Uri profileImg;
+    private Uri coverImg;
 
     public User() {
     }
 
     public User(String name, String statusMessage, String phoneNumber, String email, Uri profileImg, Uri coverImg) {
-        mName = name;
-        mStatusMessage = statusMessage;
-        mPhoneNumber = phoneNumber;
-        mEmail = email;
-        mProfileImg = profileImg;
-        mCoverImg = coverImg;
+        this.name = name;
+        this.statusMessage = statusMessage;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.profileImg = profileImg;
+        this.coverImg = coverImg;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public String getStatusMessage() {
-        return mStatusMessage;
+        return statusMessage;
     }
 
     public String getPhoneNumber() {
-        return mPhoneNumber;
+        return phoneNumber;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public Uri getProfileImg() {
-        return mProfileImg;
+        return profileImg;
     }
 
     public Uri getCoverImg() {
-        return mCoverImg;
+        return coverImg;
     }
 }
