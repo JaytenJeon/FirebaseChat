@@ -143,7 +143,7 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
                 Context context = friendViewHolder.mContext;
                 Uri profileURI = friendViewHolder.mItem.getProfileImg();
                 if(profileURI != null){
-                    friendViewHolder.mImageViewProfile.setImageURI(profileURI);
+//                    friendViewHolder.mImageViewProfile.setImageURI(profileURI);
 
                 }
 

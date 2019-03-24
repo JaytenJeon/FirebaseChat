@@ -72,10 +72,10 @@ public class FriendDetailActivity extends AppCompatActivity {
 
 
         if(friendItemChild.getProfileImg() != null){
-            mImageProfile.setImageURI(friendItemChild.getProfileImg());
+//            mImageProfile.setImageURI(friendItemChild.getProfileImg());
         }
         if(friendItemChild.getCoverImg() != null){
-            mImageCover.setImageURI(friendItemChild.getCoverImg());
+//            mImageCover.setImageURI(friendItemChild.getCoverImg());
 
         }
 
