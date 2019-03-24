@@ -65,8 +65,8 @@ import android.widget.LinearLayout;
             setContentView(R.layout.activity_chat_room);
 
             Intent intent = getIntent();
-            final Chat chat = (Chat) intent.getSerializableExtra("data");
-            getSupportActionBar().setTitle(chat.getName());
+            final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
+            getSupportActionBar().setTitle(chatRoom.getName());
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
             getSupportActionBar().setElevation(5);
             recyclerView = findViewById(R.id.recycler_message);
@@ -74,7 +74,7 @@ import android.widget.LinearLayout;
             ll.setStackFromEnd(true);
 //        ll.setReverseLayout(true);
             recyclerView.setLayoutManager(ll);
-            final MessageRecyclerAdapter adapter = new MessageRecyclerAdapter(chat.getMessages());
+            final MessageRecyclerAdapter adapter = new MessageRecyclerAdapter(chatRoom.getMessages());
             recyclerView.setAdapter(adapter);
             recyclerView.postDelayed(new Runnable() {
                 @Override
@@ -102,7 +102,7 @@ import android.widget.LinearLayout;
             buttonSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    chat.getMessages().add(new Message(chat.getUsers().get(0), editText.getText().toString().trim()));
+                    chatRoom.getMessages().add(new Message(chatRoom.getUsers().get(0), editText.getText().toString().trim()));
                     adapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                     editText.setText("");

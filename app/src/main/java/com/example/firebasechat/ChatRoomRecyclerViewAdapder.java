@@ -2,22 +2,20 @@ package com.example.firebasechat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ChatRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<Chat> mChatList;
+public class ChatRoomRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final List<ChatRoom> mChatRoomList;
     private final ChatFragment.OnFragmentInteractionListener mListener;
 
-    public ChatRecyclerViewAdapder(List<Chat> chatList,ChatFragment.OnFragmentInteractionListener listener) {
-        mChatList = chatList;
+    public ChatRoomRecyclerViewAdapder(List<ChatRoom> chatRoomList, ChatFragment.OnFragmentInteractionListener listener) {
+        mChatRoomList = chatRoomList;
         mListener = listener;
     }
 
@@ -34,7 +32,7 @@ public class ChatRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        Chat item = mChatList.get(i);
+        ChatRoom item = mChatRoomList.get(i);
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
         holder.mTextName.setText(item.getName());
@@ -55,7 +53,7 @@ public class ChatRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return mChatList.size();
+        return mChatRoomList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,7 +62,7 @@ public class ChatRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.V
         private final TextView mTextName;
         private final TextView mTextLatestMessage;
         private final TextView mTextDate;
-        private Chat mItem;
+        private ChatRoom mItem;
 
         public ViewHolder(View view) {
             super(view);

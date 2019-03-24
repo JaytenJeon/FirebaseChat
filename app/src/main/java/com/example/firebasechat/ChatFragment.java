@@ -1,7 +1,6 @@
 package com.example.firebasechat;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -75,7 +74,7 @@ public class ChatFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            recyclerView.setAdapter(new ChatRecyclerViewAdapder(DummyData.CHAT_DATA, mListener));
+            recyclerView.setAdapter(new ChatRoomRecyclerViewAdapder(DummyData.CHAT_ROOM_DATA, mListener));
             final int initialTopPosition = recyclerView.getTop();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -97,9 +96,9 @@ public class ChatFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Chat chat) {
+    public void onButtonPressed(ChatRoom chatRoom) {
         if (mListener != null) {
-            mListener.onChatItemSelected(chat);
+            mListener.onChatItemSelected(chatRoom);
         }
     }
 
@@ -131,6 +130,6 @@ public class ChatFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onChatItemSelected(Chat chat);
+        void onChatItemSelected(ChatRoom chatRoom);
     }
 }

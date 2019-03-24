@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class DummyData {
     public static final List<User> FRIEND_DATA = new ArrayList<>();
-    public static final List<Chat> CHAT_DATA = new ArrayList<>();
+    public static final List<ChatRoom> CHAT_ROOM_DATA = new ArrayList<>();
 
     private static String[] lastNames = {"김", "남", "문", "박", "이", "정", "최", "한"};
     private static String[] firstNames = {
@@ -32,11 +32,11 @@ public class DummyData {
         List<User> friends = FRIEND_DATA.subList(6,16);
         for(User friend: friends){
             User user = (User) friend;
-            CHAT_DATA.add(makeChat(user));
+            CHAT_ROOM_DATA.add(makeChat(user));
         }
     }
 
-    private static Chat makeChat(User user){
+    private static ChatRoom makeChat(User user){
 
         List<User> users = new ArrayList<>();
         List<Message> messageList= new ArrayList<>();
@@ -51,9 +51,9 @@ public class DummyData {
             }
         }
 
-        Chat chat = new Chat(user.getName(), messageList, users);
+        ChatRoom chatRoom = new ChatRoom(user.getName(), messageList, users);
 
-        return  chat;
+        return chatRoom;
     }
     private static Message makeMessage(User user){
         Random random = new Random();

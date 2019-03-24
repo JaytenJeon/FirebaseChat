@@ -13,12 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class MainActivity extends AppCompatActivity
         implements FriendFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
@@ -43,7 +37,7 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.menu_chat:
                     replaceFragment(mChatFragment);
-                    Log.d("!!!1", ""+DummyData.CHAT_DATA.size());
+                    Log.d("!!!1", ""+DummyData.CHAT_ROOM_DATA.size());
                     return true;
                 case R.id.menu_more:
                     replaceFragment(mMoreFragment);
@@ -94,9 +88,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onChatItemSelected(Chat chat) {
+    public void onChatItemSelected(ChatRoom chatRoom) {
         Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-        intent.putExtra("data", chat);
+        intent.putExtra("data", chatRoom);
         startActivity(intent);
         overridePendingTransition(R.anim.enter,R.anim.exit);
     }
