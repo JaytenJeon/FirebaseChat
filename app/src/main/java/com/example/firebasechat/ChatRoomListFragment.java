@@ -11,16 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChatFragment.OnFragmentInteractionListener} interface
+ * {@link ChatRoomListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ChatFragment#newInstance} factory method to
+ * Use the {@link ChatRoomListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment {
+public class ChatRoomListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,8 +36,12 @@ public class ChatFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private ChatRoomRecyclerViewAdapder mAdapter;
+    private FirebaseFirestore mFirestore;
+    private FirebaseUser mUser;
+    private Query mQuery;
 
-    public ChatFragment() {
+    public ChatRoomListFragment() {
         // Required empty public constructor
     }
 
@@ -42,11 +51,11 @@ public class ChatFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatFragment.
+     * @return A new instance of fragment ChatRoomListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatFragment newInstance(String param1, String param2) {
-        ChatFragment fragment = new ChatFragment();
+    public static ChatRoomListFragment newInstance(String param1, String param2) {
+        ChatRoomListFragment fragment = new ChatRoomListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,6 +72,12 @@ public class ChatFragment extends Fragment {
         }
         getActivity().setTitle(R.string.title_chat);
 
+        mFirestore = FirebaseFirestore.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mQuery = mFirestore.collection("chatRooms")
+                .whereEqualTo("users."+mUser.getUid(), true);
+
+
     }
 
     @Override
@@ -73,8 +88,11 @@ public class ChatFragment extends Fragment {
         if(view instanceof RecyclerView){
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-            recyclerView.setAdapter(new ChatRoomRecyclerViewAdapder(DummyData.CHAT_ROOM_DATA, mListener));
+            if(mAdapter == null){
+                mAdapter = new ChatRoomRecyclerViewAdapder(mQuery, mListener);
+                mAdapter.startListening();
+            }
+            recyclerView.setAdapter(mAdapter);
             final int initialTopPosition = recyclerView.getTop();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

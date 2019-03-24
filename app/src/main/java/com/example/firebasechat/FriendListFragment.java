@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,25 +17,22 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FriendFragment.OnFragmentInteractionListener} interface
+ * {@link FriendListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FriendFragment#newInstance} factory method to
+ * Use the {@link FriendListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FriendFragment extends Fragment {
+public class FriendListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,7 +48,7 @@ public class FriendFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FriendFragment() {
+    public FriendListFragment() {
         // Required empty public constructor
     }
 
@@ -62,13 +58,13 @@ public class FriendFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FriendFragment.
+     * @return A new instance of fragment FriendListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FriendFragment newInstance(String param1, String param2) {
+    public static FriendListFragment newInstance(String param1, String param2) {
 
 
-        FriendFragment fragment = new FriendFragment();
+        FriendListFragment fragment = new FriendListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

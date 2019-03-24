@@ -14,16 +14,16 @@ import android.util.Log;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements FriendFragment.OnFragmentInteractionListener,
-        ChatFragment.OnFragmentInteractionListener,
+        implements FriendListFragment.OnFragmentInteractionListener,
+        ChatRoomListFragment.OnFragmentInteractionListener,
         MoreFragment.OnFragmentInteractionListener{
     public static User USER_PROFILE;
 
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
 
-    private FriendFragment mFriendFragment = FriendFragment.newInstance("", "");
-    private ChatFragment mChatFragment = ChatFragment.newInstance("", "");
+    private FriendListFragment mFriendListFragment = FriendListFragment.newInstance("", "");
+    private ChatRoomListFragment mChatRoomListFragment = ChatRoomListFragment.newInstance("", "");
     private MoreFragment mMoreFragment = MoreFragment.newInstance("", "");
 
 
@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.menu_friend:
-                    replaceFragment(mFriendFragment);
+                    replaceFragment(mFriendListFragment);
                     return true;
                 case R.id.menu_chat:
-                    replaceFragment(mChatFragment);
+                    replaceFragment(mChatRoomListFragment);
                     Log.d("!!!1", ""+DummyData.CHAT_ROOM_DATA.size());
                     return true;
                 case R.id.menu_more:
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mFriendFragment).commit();
+        fragmentTransaction.add(R.id.fragment_container, mFriendListFragment).commit();
 
 
     }

@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
-class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Message> mMessages;
+class MessageRecyclerAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
 
-    public MessageRecyclerAdapter(List<Message> messages) {
-        mMessages = messages;
+    public MessageRecyclerAdapter(Query query) {
+        super(query);
     }
 
     @NonNull
@@ -38,7 +38,7 @@ class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        Message message = mMessages.get(i);
+        Message message = getSnapshot(i).toObject(Message.class);
         switch (getItemViewType(i)){
             case 0:
                 MyMessageViewHolder myMessageViewHolder = (MyMessageViewHolder) viewHolder;
@@ -50,7 +50,7 @@ class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             default:
                 MessageViewHolder messageViewHolder = (MessageViewHolder) viewHolder;
                 messageViewHolder.mImageProfile.setClipToOutline(true);
-                messageViewHolder.mTextName.setText(message.getUser().getName());
+                messageViewHolder.mTextName.setText(message.getName());
                 messageViewHolder.mTextMessage.setText(message.getContent());
                 messageViewHolder.mTextMessage.requestLayout();
                 messageViewHolder.mTextTime.setText(message.getTime());
@@ -61,13 +61,9 @@ class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return mMessages.get(position).getUser().getEmail() == FirebaseAuth.getInstance().getCurrentUser().getEmail() ?0:1;
+        return getSnapshot(position).toObject(Message.class).getUid() == FirebaseAuth.getInstance().getCurrentUser().getUid() ?0:1;
     }
 
-    @Override
-    public int getItemCount() {
-        return  mMessages.size();
-    }
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         private ImageView mImageProfile;
         private TextView mTextName;

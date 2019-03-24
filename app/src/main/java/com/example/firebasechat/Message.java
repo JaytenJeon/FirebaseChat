@@ -1,36 +1,55 @@
 package com.example.firebasechat;
 
+import android.net.Uri;
+
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class Message implements Serializable {
-    private User mUser;
-    private String mContent;
-    private Date mDate;
-    public Message(User user, String content){
-        this.mUser = user;
-        this.mContent = content;
-        this.mDate = Calendar.getInstance().getTime();
+    private String name;
+    private String uid;
+    private Uri profileImg;
+    private String content;
+    private Timestamp timestamp;
+
+    public Message() {
     }
 
-    public User getUser() {
-        return mUser;
+    public Message(String name, String uid, Uri profileImg, String content){
+        this.name = name;
+        this.uid = uid;
+        this.profileImg = profileImg;
+        this.content = content;
+        this.timestamp = new Timestamp(Calendar.getInstance().getTime());
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Uri getProfileImg() {
+        return profileImg;
     }
 
     public String getContent() {
-        return mContent;
+        return content;
     }
 
-    public String getDate() {
+    public String getTimestamp() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(mDate);
+        return format.format(timestamp.toDate());
     }
 
     public String getTime(){
         SimpleDateFormat format = new SimpleDateFormat("a h:mm", Locale.KOREA);
-        return format.format(mDate);
+        return format.format(timestamp.toDate());
     }
 }

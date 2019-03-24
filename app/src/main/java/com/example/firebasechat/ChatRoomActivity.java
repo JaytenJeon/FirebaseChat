@@ -17,11 +17,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
     public class ChatRoomActivity extends AppCompatActivity {
-        RecyclerView recyclerView;
-        EditText editText;
-        ImageButton buttonSend;
+        private RecyclerView recyclerView;
+        private EditText editText;
+        private ImageButton buttonSend;
+        private MessageRecyclerAdapter mAdapter;
+        private FirebaseFirestore mFirestore;
+        private FirebaseUser mUser;
+        private Query mQuery;
 
         @Override
         public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -66,27 +76,38 @@ import android.widget.LinearLayout;
 
             Intent intent = getIntent();
             final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
-            getSupportActionBar().setTitle(chatRoom.getName());
+            getSupportActionBar().setTitle(chatRoom.getChatRoomName());
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
             getSupportActionBar().setElevation(5);
             recyclerView = findViewById(R.id.recycler_message);
             LinearLayoutManager ll = new LinearLayoutManager(this);
             ll.setStackFromEnd(true);
-//        ll.setReverseLayout(true);
             recyclerView.setLayoutManager(ll);
-            final MessageRecyclerAdapter adapter = new MessageRecyclerAdapter(chatRoom.getMessages());
-            recyclerView.setAdapter(adapter);
+
+            mFirestore = FirebaseFirestore.getInstance();
+            mUser = FirebaseAuth.getInstance().getCurrentUser();
+            mQuery = mFirestore.collection("chatRooms")
+                    .document(chatRoom.getId()).collection("messages");
+
+
+            if(mAdapter == null){
+                mAdapter = new MessageRecyclerAdapter(mQuery);
+                Toast.makeText(getApplicationContext(), ""+mAdapter.getItemCount(),Toast.LENGTH_SHORT).show();
+                mAdapter.startListening();
+            }
+
+            recyclerView.setAdapter(mAdapter);
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                    recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
 
                 }
             },0);
             recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                    recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
 
                 }
             });
@@ -102,9 +123,9 @@ import android.widget.LinearLayout;
             buttonSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    chatRoom.getMessages().add(new Message(chatRoom.getUsers().get(0), editText.getText().toString().trim()));
-                    adapter.notifyDataSetChanged();
-                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+//                    chatRoom.getMessages().add(new Message(chatRoom.getUsers().get(0), editText.getText().toString().trim()));
+                    mAdapter.notifyDataSetChanged();
+                    recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
                     editText.setText("");
                 }
             });

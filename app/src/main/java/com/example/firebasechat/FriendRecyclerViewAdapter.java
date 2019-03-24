@@ -1,12 +1,9 @@
 package com.example.firebasechat;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
@@ -31,10 +22,10 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
     public static final int HEADER = 1;
     public static final int OTHER = 2;
 
-    private FriendFragment.OnFragmentInteractionListener mListener;
+    private FriendListFragment.OnFragmentInteractionListener mListener;
     private List<User> mDefaultList;
 
-    public FriendRecyclerViewAdapter(Query query,  FriendFragment.OnFragmentInteractionListener listener) {
+    public FriendRecyclerViewAdapter(Query query,  FriendListFragment.OnFragmentInteractionListener listener) {
         super(query);
         mListener = listener;
         mDefaultList = new ArrayList<>();

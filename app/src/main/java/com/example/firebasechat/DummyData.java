@@ -51,14 +51,14 @@ public class DummyData {
             }
         }
 
-        ChatRoom chatRoom = new ChatRoom(user.getName(), messageList, users);
+        ChatRoom chatRoom = new ChatRoom();
 
         return chatRoom;
     }
     private static Message makeMessage(User user){
         Random random = new Random();
         String content = messages[random.nextInt(messages.length-1)+1];
-        Message message = new Message(user, content);
+        Message message = new Message();
         return message;
     }
 

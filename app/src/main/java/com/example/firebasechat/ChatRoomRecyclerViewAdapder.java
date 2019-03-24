@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
+import com.google.firebase.firestore.Query;
 
-public class ChatRoomRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<ChatRoom> mChatRoomList;
-    private final ChatFragment.OnFragmentInteractionListener mListener;
+public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.ViewHolder> {
+    private final ChatRoomListFragment.OnFragmentInteractionListener mListener;
 
-    public ChatRoomRecyclerViewAdapder(List<ChatRoom> chatRoomList, ChatFragment.OnFragmentInteractionListener listener) {
-        mChatRoomList = chatRoomList;
+    public ChatRoomRecyclerViewAdapder(Query query, ChatRoomListFragment.OnFragmentInteractionListener listener) {
+        super(query);
         mListener = listener;
     }
 
@@ -32,13 +31,13 @@ public class ChatRoomRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        ChatRoom item = mChatRoomList.get(i);
+        ChatRoom item = getSnapshot(i).toObject(ChatRoom.class);
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
-        holder.mTextName.setText(item.getName());
-        holder.mTextLatestMessage.setText(item.getMessages().get(0).getContent());
+        holder.mTextName.setText(item.getChatRoomName());
+        holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
-        holder.mTextDate.setText(item.getMessages().get(0).getDate());
+        holder.mTextDate.setText(item.getDate());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,11 +48,6 @@ public class ChatRoomRecyclerViewAdapder extends RecyclerView.Adapter<RecyclerVi
                 }
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mChatRoomList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
