@@ -34,7 +34,7 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
         ChatRoom item = getSnapshot(i).toObject(ChatRoom.class);
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
-        holder.mTextName.setText(item.getChatRoomName());
+        holder.mTextName.setText(item.generateChatRoomName());
         holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
         holder.mTextDate.setText(item.getDate());

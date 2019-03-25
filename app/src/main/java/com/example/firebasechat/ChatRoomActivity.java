@@ -2,8 +2,8 @@
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,16 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -32,24 +33,26 @@ import com.google.firebase.firestore.Query;
         private FirebaseFirestore mFirestore;
         private FirebaseUser mUser;
         private Query mQuery;
+//
+//        @Override
+//        public boolean dispatchTouchEvent(MotionEvent ev) {
+//            View v = (View)getCurrentFocus();
+//
+//            if (ev.getAction() == MotionEvent.ACTION_DOWN && v != null) {
+//                if ( v.getParent() instanceof LinearLayout) {
+//
+//                    Rect outRect = new Rect();
+//                    v.getGlobalVisibleRect(outRect);
+//                    if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+//                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                    }
+//                }
+//            }
+//            return super.dispatchTouchEvent(ev);
+//        }
 
-        @Override
-        public boolean dispatchTouchEvent(MotionEvent ev) {
-            View v = (View)getCurrentFocus();
 
-            if (ev.getAction() == MotionEvent.ACTION_DOWN && v != null) {
-                if ( v.getParent() instanceof LinearLayout) {
-
-                    Rect outRect = new Rect();
-                    v.getGlobalVisibleRect(outRect);
-                    if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    }
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
 
         @Override
         public void onBackPressed() {
@@ -76,18 +79,20 @@ import com.google.firebase.firestore.Query;
 
             Intent intent = getIntent();
             final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
-            getSupportActionBar().setTitle(chatRoom.getChatRoomName());
+            getSupportActionBar().setTitle(chatRoom.generateChatRoomName());
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
             getSupportActionBar().setElevation(5);
             recyclerView = findViewById(R.id.recycler_message);
             LinearLayoutManager ll = new LinearLayoutManager(this);
-            ll.setStackFromEnd(true);
+//            ll.setStackFromEnd(true);
+//            ll.setReverseLayout(true);
             recyclerView.setLayoutManager(ll);
 
             mFirestore = FirebaseFirestore.getInstance();
             mUser = FirebaseAuth.getInstance().getCurrentUser();
             mQuery = mFirestore.collection("chatRooms")
-                    .document(chatRoom.getId()).collection("messages");
+                    .document(chatRoom.getId()).collection("messages")
+                    .orderBy("timestamp");
 
 
             if(mAdapter == null){
@@ -112,21 +117,26 @@ import com.google.firebase.firestore.Query;
                 }
             });
 
-            recyclerView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
             buttonSend = findViewById(R.id.button_send);
             buttonSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    chatRoom.getMessages().add(new Message(chatRoom.getUsers().get(0), editText.getText().toString().trim()));
-                    mAdapter.notifyDataSetChanged();
-                    recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
-                    editText.setText("");
+                    User user = MainActivity.USER_PROFILE;
+                    String content = editText.getText().toString().trim();
+                    mFirestore.collection("chatRooms")
+                            .document(chatRoom.getId()).collection("messages")
+                            .add(new Message(user.getName(), mUser.getUid(), null,content))
+                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
+                                    editText.setText("");
+
+                                }
+                            });
+//                    mAdapter.notifyDataSetChanged();
                 }
             });
             editText = findViewById(R.id.edit_input);

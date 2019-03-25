@@ -3,6 +3,7 @@ package com.example.firebasechat;
 import android.net.Uri;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,8 @@ public class Message implements Serializable {
     private Uri profileImg;
     private String content;
     private Timestamp timestamp;
-
+    private String time;
+    private String date;
     public Message() {
     }
 
@@ -25,6 +27,8 @@ public class Message implements Serializable {
         this.profileImg = profileImg;
         this.content = content;
         this.timestamp = new Timestamp(Calendar.getInstance().getTime());
+        this.time = generateTime(this.timestamp);
+        this.date = generateDate(this.timestamp);
     }
 
     public String getUid() {
@@ -43,13 +47,25 @@ public class Message implements Serializable {
         return content;
     }
 
-    public String getTimestamp() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(timestamp.toDate());
+    public Timestamp getTimestamp() {
+        return this.timestamp;
     }
 
-    public String getTime(){
-        SimpleDateFormat format = new SimpleDateFormat("a h:mm", Locale.KOREA);
+    public String getTime() {
+        return time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String generateTime(Timestamp timestamp) {
+        SimpleDateFormat format = new SimpleDateFormat("a h:m", Locale.KOREA);
+        return  format.format(timestamp.toDate());
+    }
+
+    public String generateDate(Timestamp timestamp) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy. m. d.", Locale.KOREA);
         return format.format(timestamp.toDate());
     }
 }

@@ -49,7 +49,7 @@ class ChatRoom implements Serializable {
         return name;
     }
 
-    public String getChatRoomName() {
+    public String generateChatRoomName() {
         if(getName().size()>1){
             String userName = MainActivity.USER_PROFILE.getName();
             getName().remove(name.indexOf(userName));
