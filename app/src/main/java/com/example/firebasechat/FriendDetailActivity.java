@@ -1,6 +1,7 @@
 package com.example.firebasechat;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 public class FriendDetailActivity extends AppCompatActivity {
     private TextView mTextName;
     private TextView mTextStatusMessage;
@@ -20,10 +33,13 @@ public class FriendDetailActivity extends AppCompatActivity {
     private TextView mLabelEditProfile;
     private TextView mLabelChat;
     private ImageButton mButtonClose;
-    private TextView textPhoneNumber;
+    private TextView mTextPhoneNumber;
+    private ImageButton mButtonChat;
     private float previousY;
     private int originHeight;
     private ConstraintLayout profileLayout;
+
+    private FirebaseFirestore mFirebaseFirestore;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -58,24 +74,65 @@ public class FriendDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_detail);
 
         Intent intent = getIntent();
-        User friendItemChild = (User) intent.getSerializableExtra("data");
+        User friend = (User) intent.getSerializableExtra("data");
         int type = (int) intent.getIntExtra("type",-1);
         mTextName = findViewById(R.id.text_name);
         mTextStatusMessage = findViewById(R.id.profileStatusMessage);
         mImageProfile = findViewById(R.id.image_profile);
-        mTextName.setText(friendItemChild.getName());
-        mTextStatusMessage.setText(friendItemChild.getStatusMessage());
-        textPhoneNumber = findViewById(R.id.text_phone_number);
-        textPhoneNumber.setText(friendItemChild.getPhoneNumber());
+        mTextName.setText(friend.getName());
+        mTextStatusMessage.setText(friend.getStatusMessage());
+        mTextPhoneNumber = findViewById(R.id.text_phone_number);
+        mTextPhoneNumber.setText(friend.getPhoneNumber());
         mImageCover = findViewById(R.id.image_cover);
+        mButtonChat = findViewById(R.id.button_chat);
 
+        mFirebaseFirestore = FirebaseFirestore.getInstance();
+        mButtonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String friendUid = friend.getUid();
+                int userCount = myUid.equals(friendUid) ? 1 : 2;
+                mFirebaseFirestore.collection("chatRooms")
+                        .whereEqualTo("users."+myUid, true)
+                        .whereEqualTo("users."+friendUid, true)
+                        .whereEqualTo("userCount", userCount).limit(1)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot document = task.getResult();
+                            List<ChatRoom> chatRooms =  document.toObjects(ChatRoom.class);
+                            ChatRoom chatRoom;
+                            if(chatRooms.size()>0){
+                                chatRoom = chatRooms.get(0);
+                            }else{
+                                String myName = MainActivity.USER_PROFILE.getName();
+                                String friendName = friend.getName();
+                                String id = myUid +"_"+friendUid;
+                                ArrayList<String> name = new ArrayList<>(Arrays.asList(myName,friendName));
+                                HashMap<String, Boolean> users = new HashMap<>();
+                                users.put(myUid, true);
+                                users.put(friendUid, true);
+                                chatRoom = new ChatRoom(name, users, id, null,null,null,userCount);
 
+                            }
+                            Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                            intent.putExtra("data", chatRoom);
+                            startActivity(intent);
+                            finish();
+                        }
 
-        if(friendItemChild.getProfileImg() != null){
-//            mImageProfile.setImageURI(friendItemChild.getProfileImg());
+                    }
+                });
+            }
+        });
+
+        if(friend.getProfileImg() != null){
+//            mImageProfile.setImageURI(friend.getProfileImg());
         }
-        if(friendItemChild.getCoverImg() != null){
-//            mImageCover.setImageURI(friendItemChild.getCoverImg());
+        if(friend.getCoverImg() != null){
+//            mImageCover.setImageURI(friend.getCoverImg());
 
         }
 

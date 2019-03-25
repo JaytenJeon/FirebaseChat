@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +24,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
     public class ChatRoomActivity extends AppCompatActivity {
         private RecyclerView recyclerView;
@@ -97,7 +101,6 @@ import com.google.firebase.firestore.Query;
 
             if(mAdapter == null){
                 mAdapter = new MessageRecyclerAdapter(mQuery);
-                Toast.makeText(getApplicationContext(), ""+mAdapter.getItemCount(),Toast.LENGTH_SHORT).show();
                 mAdapter.startListening();
             }
 
@@ -136,7 +139,13 @@ import com.google.firebase.firestore.Query;
 
                                 }
                             });
-//                    mAdapter.notifyDataSetChanged();
+                    chatRoom.setLatestMessage(content);
+                    chatRoom.setLatestTimestamp(
+                            new SimpleDateFormat("yyyy. M. d.", Locale.KOREA).format(
+                                    Calendar.getInstance().getTime()
+                            ));
+                    mFirestore.collection("chatRooms").document(chatRoom.getId())
+                                .set(chatRoom);
                 }
             });
             editText = findViewById(R.id.edit_input);

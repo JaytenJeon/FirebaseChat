@@ -6,7 +6,7 @@ public class FriendRecyclerHeader extends User {
     private List<User> childList;
 
     public FriendRecyclerHeader(String name) {
-        super(name,null,null,null,null,null);
+        super(name,null,null,null,null,null,null    );
     }
 
     public List<User> getChildList() {

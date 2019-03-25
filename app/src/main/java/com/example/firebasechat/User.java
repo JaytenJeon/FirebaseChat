@@ -9,19 +9,26 @@ public class User implements Serializable {
     private String statusMessage;
     private String phoneNumber;
     private String email;
+    private String uid;
     private Uri profileImg;
     private Uri coverImg;
 
     public User() {
     }
 
-    public User(String name, String statusMessage, String phoneNumber, String email, Uri profileImg, Uri coverImg) {
+    public User(String name, String statusMessage, String phoneNumber, String email,
+                Uri profileImg, Uri coverImg, String uid) {
         this.name = name;
         this.statusMessage = statusMessage;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.profileImg = profileImg;
         this.coverImg = coverImg;
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {

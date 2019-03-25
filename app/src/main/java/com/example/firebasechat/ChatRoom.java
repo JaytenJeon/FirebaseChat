@@ -9,24 +9,39 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 class ChatRoom implements Serializable {
-    private ArrayList<String>  name;
+    private ArrayList<String> name;
     private String id;
+    private HashMap<String, Boolean> users;
     private Uri profileImg;
     private String latestTimestamp;
     private String latestMessage;
+    private int userCount;
 
     public ChatRoom() {
     }
 
-    public ChatRoom(ArrayList<String> name, String id, Uri profileImg, String latestTimestamp, String latestMessage) {
+    public ChatRoom(ArrayList<String> name, HashMap<String, Boolean> users, String id,
+                    Uri profileImg, String latestTimestamp,
+                    String latestMessage, int userCount) {
         this.name = name;
         this.id = id;
         this.profileImg = profileImg;
+        this.users = users;
         this.latestTimestamp = latestTimestamp;
         this.latestMessage = latestMessage;
+        this.userCount = userCount;
+    }
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public HashMap<String, Boolean> getUsers() {
+        return users;
     }
 
     public String getId() {
@@ -37,7 +52,7 @@ class ChatRoom implements Serializable {
         return profileImg;
     }
 
-    public String getDate() {
+    public String getLatestTimestamp() {
         return latestTimestamp;
     }
 
@@ -58,4 +73,11 @@ class ChatRoom implements Serializable {
         return getName().get(0);
     }
 
+    public void setLatestTimestamp(String latestTimestamp) {
+        this.latestTimestamp = latestTimestamp;
+    }
+
+    public void setLatestMessage(String latestMessage) {
+        this.latestMessage = latestMessage;
+    }
 }

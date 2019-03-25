@@ -104,14 +104,14 @@ public class DummyData {
 
     private static User makeFriendItemChild(String name){
 
-        User user = new User(name, null, null, null, null, null);
+        User user = new User(name, null, null, null, null, null, null);
         return user;
     }
 
     private static User makeFriendItemChild(String name, String message,
                                                        String phoneNumber, Uri uri){
 
-        User user = new User(name, message, phoneNumber, null, uri, null);
+        User user = new User(name, message, phoneNumber, null, uri, null, null);
         return user;
     }
 

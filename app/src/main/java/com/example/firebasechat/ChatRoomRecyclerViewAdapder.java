@@ -37,7 +37,7 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
         holder.mTextName.setText(item.generateChatRoomName());
         holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
-        holder.mTextDate.setText(item.getDate());
+        holder.mTextDate.setText(item.getLatestTimestamp());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

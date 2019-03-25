@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements FriendListFragment.OnFragmentInteractionListener,
@@ -61,20 +62,15 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, mFriendListFragment).commit();
-
-
+        replaceFragment(mFriendListFragment);
     }
 
     @Override
     public void onFriendItemSelected(User user, int type) {
         Intent intent;
-
         switch (type){
             case FriendRecyclerViewAdapter.HEADER:
-            case FriendRecyclerViewAdapter.OTHER:
+//            case FriendRecyclerViewAdapter.OTHER:
                 break;
 
             default:

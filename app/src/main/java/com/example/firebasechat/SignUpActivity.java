@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                User user = new User(firebaseUser.getDisplayName(), null, firebaseUser.getPhoneNumber(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl(), null);
+                User user = new User(firebaseUser.getDisplayName(), null, firebaseUser.getPhoneNumber(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl(),null, firebaseUser.getUid());
                 // ...
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("users").document(firebaseUser.getUid()).get()
