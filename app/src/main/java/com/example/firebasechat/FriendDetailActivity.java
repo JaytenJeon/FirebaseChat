@@ -110,7 +110,9 @@ public class FriendDetailActivity extends AppCompatActivity {
                                 String myName = MainActivity.USER_PROFILE.getName();
                                 String friendName = friend.getName();
                                 String id = myUid +"_"+friendUid;
-                                ArrayList<String> name = new ArrayList<>(Arrays.asList(myName,friendName));
+                                ArrayList<String> name = new ArrayList<>();
+                                name.add(friendName);
+                                name.add(myName);
                                 HashMap<String, Boolean> users = new HashMap<>();
                                 users.put(myUid, true);
                                 users.put(friendUid, true);

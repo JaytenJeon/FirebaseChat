@@ -67,10 +67,13 @@ class ChatRoom implements Serializable {
     public String generateChatRoomName() {
         if(getName().size()>1){
             String userName = MainActivity.USER_PROFILE.getName();
-            getName().remove(name.indexOf(userName));
+            for(String name: getName()){
+                if(!name.equals(userName)){
+                    return name;
+                }
+            }
         }
-
-        return getName().get(0);
+        return null;
     }
 
     public void setLatestTimestamp(String latestTimestamp) {
