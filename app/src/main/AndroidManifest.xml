@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".SignUpActivity" />
+        <activity android:name=".FriendSearchActivity"></activity>
+        <activity android:name=".SignUpActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -24,7 +24,7 @@
             android:name=".ChatRoomActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/ChatRoomTheme"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".FriendDetailActivity"
             android:theme="@style/FriendDetailTheme" />

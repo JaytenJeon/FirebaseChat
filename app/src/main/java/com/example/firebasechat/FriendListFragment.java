@@ -93,6 +93,8 @@ public class FriendListFragment extends Fragment {
                         });
                 getActivity().finish();
                 return true;
+            case R.id.action_friend_add:
+                startActivity(new Intent(getContext(), FriendSearchActivity.class));
         }
         return false;
 
