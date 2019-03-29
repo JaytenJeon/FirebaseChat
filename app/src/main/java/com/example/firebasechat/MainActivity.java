@@ -14,6 +14,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity
         implements FriendListFragment.OnFragmentInteractionListener,
         ChatRoomListFragment.OnFragmentInteractionListener,
@@ -63,6 +73,35 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         replaceFragment(mFriendListFragment);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("!!!!", "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                Map<String, Object> data = new HashMap<>();
+                data.put("uid", uid);
+                data.put("fcmId",token);
+                Log.d("!!!!!", uid+": "+token);
+                FirebaseFirestore.getInstance().collection("fcmIds")
+                        .document(uid).set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(!task.isSuccessful()){
+                            return;
+                        }
+
+                    }
+                });
+            }
+        });
+
     }
 
     @Override

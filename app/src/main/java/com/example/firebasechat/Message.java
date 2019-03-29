@@ -12,7 +12,8 @@ import java.util.Locale;
 
 public class Message implements Serializable {
     private String name;
-    private String uid;
+    private String fromUid;
+    private String toUid;
     private Uri profileImg;
     private String content;
     private Timestamp timestamp;
@@ -21,9 +22,10 @@ public class Message implements Serializable {
     public Message() {
     }
 
-    public Message(String name, String uid, Uri profileImg, String content){
+    public Message(String name, String fromUid, String toUid, Uri profileImg, String content){
         this.name = name;
-        this.uid = uid;
+        this.fromUid = fromUid;
+        this.toUid = toUid;
         this.profileImg = profileImg;
         this.content = content;
         this.timestamp = new Timestamp(Calendar.getInstance().getTime());
@@ -31,8 +33,12 @@ public class Message implements Serializable {
         this.date = generateDate(this.timestamp);
     }
 
-    public String getUid() {
-        return uid;
+    public String getFromUid() {
+        return fromUid;
+    }
+
+    public String getToUid() {
+        return toUid;
     }
 
     public String getName() {

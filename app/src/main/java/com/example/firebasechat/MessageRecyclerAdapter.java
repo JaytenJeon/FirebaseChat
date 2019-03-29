@@ -77,7 +77,7 @@ class MessageRecyclerAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        String messageUid = getSnapshot(position).toObject(Message.class).getUid();
+        String messageUid = getSnapshot(position).toObject(Message.class).getFromUid();
         String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         return messageUid.equals(myUid) ?0:1;

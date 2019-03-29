@@ -37,26 +37,6 @@ import java.util.Locale;
         private FirebaseFirestore mFirestore;
         private FirebaseUser mUser;
         private Query mQuery;
-//
-//        @Override
-//        public boolean dispatchTouchEvent(MotionEvent ev) {
-//            View v = (View)getCurrentFocus();
-//
-//            if (ev.getAction() == MotionEvent.ACTION_DOWN && v != null) {
-//                if ( v.getParent() instanceof LinearLayout) {
-//
-//                    Rect outRect = new Rect();
-//                    v.getGlobalVisibleRect(outRect);
-//                    if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
-//                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-//                    }
-//                }
-//            }
-//            return super.dispatchTouchEvent(ev);
-//        }
-
-
 
         @Override
         public void onBackPressed() {
@@ -126,16 +106,24 @@ import java.util.Locale;
                 @Override
                 public void onClick(View v) {
 //                    chatRoom.getMessages().add(new Message(chatRoom.getUsers().get(0), editText.getText().toString().trim()));
+
                     User user = MainActivity.USER_PROFILE;
                     String content = editText.getText().toString().trim();
+                    editText.setText("");
+                    String[] ids = chatRoom.getId().split("_");
+                    String toId = null;
+                    for(String id: ids){
+                        if(!id.equals(user.getUid())){
+                            toId = id;
+                        }
+                    }
                     mFirestore.collection("chatRooms")
                             .document(chatRoom.getId()).collection("messages")
-                            .add(new Message(user.getName(), mUser.getUid(), null,content))
+                            .add(new Message(user.getName(), mUser.getUid(), toId, null,content))
                             .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
-                                    editText.setText("");
 
                                 }
                             });
