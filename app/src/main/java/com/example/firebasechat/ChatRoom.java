@@ -66,7 +66,7 @@ class ChatRoom implements Serializable {
 
     public String generateChatRoomName() {
         if(getName().size()>1){
-            String userName = MainActivity.USER_PROFILE.getName();
+            String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             for(String name: getName()){
                 if(!name.equals(userName)){
                     return name;

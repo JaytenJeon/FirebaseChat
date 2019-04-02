@@ -1,6 +1,5 @@
     package com.example.firebasechat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -23,7 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,6 +37,8 @@ import java.util.Locale;
         private FirebaseFirestore mFirestore;
         private FirebaseUser mUser;
         private Query mQuery;
+
+        public static  String CHATROOM_ID = "";
 
         @Override
         public void onBackPressed() {
@@ -63,6 +65,7 @@ import java.util.Locale;
 
             Intent intent = getIntent();
             final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
+            CHATROOM_ID = chatRoom.getId();
             getSupportActionBar().setTitle(chatRoom.generateChatRoomName());
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
             getSupportActionBar().setElevation(5);
@@ -80,7 +83,13 @@ import java.util.Locale;
 
 
             if(mAdapter == null){
-                mAdapter = new MessageRecyclerAdapter(mQuery);
+                mAdapter = new MessageRecyclerAdapter(mQuery){
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        super.onEvent(documentSnapshots, e);
+                        recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
+                    }
+                };
                 mAdapter.startListening();
             }
 

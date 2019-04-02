@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
@@ -31,35 +33,61 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // Check if message contains a data payload.
+
+
+
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> data = remoteMessage.getData();
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-            NotificationCompat.Builder notiBuilder = new NotificationCompat
-                    .Builder(this,"default_notification_channel_id")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_default_friend))
-                    .setContentInfo(data.get("name"))
-                    .setPriority(NotificationCompat.PRIORITY_MAX    )
-                    .setWhen(System.currentTimeMillis())
-                    .setShowWhen(true)
-                    .setSubText(data.get("name"))
-                    .setAutoCancel(true)
-                    .setContentTitle(data.get("name"))
-                    .setContentText(data.get("content"))
-                    .setDefaults(Notification.DEFAULT_VIBRATE)
-                    .setSound(uri);
-
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Create channel to show notifications.
-                String channelName = getString(R.string.default_notification_channel_id);
-                NotificationChannel channel = new NotificationChannel("default_notification_channel_id", channelName, NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(channel);
+            if(ChatRoomActivity.CHATROOM_ID.equals(data.get("cid"))){
+                Log.d("!!!!!", "IT IS SAME");
+                return;
             }
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            FirebaseFirestore.getInstance().collection("chatRooms")
+                    .document(data.get("cid"))
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()){
+                                ChatRoom chatRoom = task.getResult().toObject(ChatRoom.class);
+                                Log.d("!!!!!", "ChatRoom id is "+chatRoom.getId());
+                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                                intent.putExtra("data", chatRoom);
+                                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+                                stackBuilder.addNextIntentWithParentStack(intent);
+                                Intent parentIntent = stackBuilder.editIntentAt(0);
+                                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                                NotificationCompat.Builder notiBuilder = new NotificationCompat
+                                        .Builder(getApplicationContext(),"default_notification_channel_id")
+                                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_person_add))
+                                        .setContentInfo(data.get("name"))
+                                        .setPriority(NotificationCompat.PRIORITY_MAX    )
+                                        .setWhen(System.currentTimeMillis())
+                                        .setShowWhen(true)
+                                        .setSubText(data.get("name"))
+                                        .setAutoCancel(true)
+                                        .setContentTitle(data.get("name"))
+                                        .setContentText(data.get("content"))
+                                        .setContentIntent(pendingIntent)
+                                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                                        .setSound(uri);
 
-            notificationManager.notify(0, notiBuilder.build());
+
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    // Create channel to show notifications.
+                                    String channelName = getString(R.string.default_notification_channel_id);
+                                    NotificationChannel channel = new NotificationChannel("default_notification_channel_id", channelName, NotificationManager.IMPORTANCE_HIGH);
+                                    notificationManager.createNotificationChannel(channel);
+                                }
+
+                                notificationManager.notify(0, notiBuilder.build());
+                            }
+                        }
+                    });
+
         }
     }
 
