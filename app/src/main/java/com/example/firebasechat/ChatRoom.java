@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class ChatRoom implements Serializable {
     private ArrayList<String> name;
@@ -65,13 +67,16 @@ class ChatRoom implements Serializable {
     }
 
     public String generateChatRoomName() {
-        if(getName().size()>1){
-            String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        Set<String> names= new HashSet<>(getName());
+        if(names.size()>1){
             for(String name: getName()){
                 if(!name.equals(userName)){
                     return name;
                 }
             }
+        }else{
+            return userName;
         }
         return null;
     }

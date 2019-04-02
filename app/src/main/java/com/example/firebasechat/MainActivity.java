@@ -87,8 +87,13 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        replaceFragment(mFriendListFragment);
-
+        int menuId = intent.getIntExtra("menu", R.id.menu_friend);
+        if(menuId == R.id.menu_chat){
+            mBottomNavigationView.getMenu().getItem(1).setChecked(true);
+            replaceFragment(mChatRoomListFragment);
+        }else {
+            replaceFragment(mFriendListFragment);
+        }
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
