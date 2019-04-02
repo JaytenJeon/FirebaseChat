@@ -123,10 +123,11 @@ public class FriendDetailActivity extends AppCompatActivity {
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                             Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                             intent.putExtra("data", chatRoom);
-                            stackBuilder.addNextIntentWithParentStack(intent);
-                            Intent parentInent = stackBuilder.editIntentAt(0);
-                            parentInent.putExtra("menu",R.id.menu_chat);
-                            stackBuilder.startActivities();
+//                            stackBuilder.addNextIntentWithParentStack(intent);
+//                            Intent parentInent = stackBuilder.editIntentAt(0);
+//                            parentInent.putExtra("menu",R.id.menu_chat);
+//                            stackBuilder.startActivities();
+                            startActivity(intent);
                             finish();
                         }
 
