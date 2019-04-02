@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
     public class ChatRoomActivity extends AppCompatActivity {
@@ -136,11 +139,8 @@ import java.util.Locale;
 
                                 }
                             });
+                    chatRoom.setSeconds(Timestamp.now().toDate().getTime());
                     chatRoom.setLatestMessage(content);
-                    chatRoom.setLatestTimestamp(
-                            new SimpleDateFormat("yyyy. M. d.", Locale.KOREA).format(
-                                    Calendar.getInstance().getTime()
-                            ));
                     mFirestore.collection("chatRooms").document(chatRoom.getId())
                                 .set(chatRoom);
                 }

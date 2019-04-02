@@ -117,7 +117,7 @@ public class FriendDetailActivity extends AppCompatActivity {
                                 HashMap<String, Boolean> users = new HashMap<>();
                                 users.put(myUid, true);
                                 users.put(friendUid, true);
-                                chatRoom = new ChatRoom(name, users, id, null,null,null,userCount);
+                                chatRoom = new ChatRoom(name, users, id, null, null, userCount, 0);
 
                             }
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());

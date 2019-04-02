@@ -67,7 +67,7 @@ public class Message implements Serializable {
     }
 
     public String generateTime(Timestamp timestamp) {
-        SimpleDateFormat format = new SimpleDateFormat("a h:m", Locale.KOREA);
+        SimpleDateFormat format = new SimpleDateFormat("a h:mm", Locale.KOREA);
         return  format.format(timestamp.toDate());
     }
 
