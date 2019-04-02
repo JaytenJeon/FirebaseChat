@@ -1,5 +1,6 @@
 package com.example.firebasechat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -93,6 +95,8 @@ public class FriendSearchActivity extends AppCompatActivity {
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                                 if(task.isSuccessful()){
                                     List<User> users = task.getResult().toObjects(User.class);
                                     if(users.size()>0){
@@ -114,6 +118,7 @@ public class FriendSearchActivity extends AppCompatActivity {
                                         mLayoutFriend.setVisibility(View.GONE);
 
                                     }
+
                                 }
                             }
                         });
