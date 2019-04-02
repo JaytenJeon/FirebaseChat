@@ -1,5 +1,6 @@
 package com.example.firebasechat;
 
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -119,9 +120,13 @@ public class FriendDetailActivity extends AppCompatActivity {
                                 chatRoom = new ChatRoom(name, users, id, null,null,null,userCount);
 
                             }
+                            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                             Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                             intent.putExtra("data", chatRoom);
-                            startActivity(intent);
+                            stackBuilder.addNextIntentWithParentStack(intent);
+                            Intent parentInent = stackBuilder.editIntentAt(0);
+                            parentInent.putExtra("menu",R.id.menu_chat);
+                            stackBuilder.startActivities();
                             finish();
                         }
 
