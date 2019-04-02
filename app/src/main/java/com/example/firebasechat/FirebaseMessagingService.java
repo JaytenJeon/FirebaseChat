@@ -1,10 +1,13 @@
 package com.example.firebasechat;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -30,14 +33,24 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> data = remoteMessage.getData();
-            Log.d("!!!!!!", data.get("body"));
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
             NotificationCompat.Builder notiBuilder = new NotificationCompat
                     .Builder(this,"default_notification_channel_id")
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentText(data.get("body"))
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_default_friend))
+                    .setContentInfo(data.get("name"))
+                    .setPriority(NotificationCompat.PRIORITY_MAX    )
+                    .setWhen(System.currentTimeMillis())
+                    .setShowWhen(true)
+                    .setSubText(data.get("name"))
                     .setAutoCancel(true)
+                    .setContentTitle(data.get("name"))
+                    .setContentText(data.get("content"))
+                    .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setSound(uri);
+
+
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Create channel to show notifications.

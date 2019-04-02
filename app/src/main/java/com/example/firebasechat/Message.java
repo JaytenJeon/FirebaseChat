@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ public class Message implements Serializable {
         this.toUid = toUid;
         this.profileImg = profileImg;
         this.content = content;
-        this.timestamp = new Timestamp(Calendar.getInstance().getTime());
+        this.timestamp = Timestamp.now();
         this.time = generateTime(this.timestamp);
         this.date = generateDate(this.timestamp);
     }
