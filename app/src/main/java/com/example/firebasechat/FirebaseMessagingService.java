@@ -57,6 +57,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                                 stackBuilder.addNextIntentWithParentStack(intent);
                                 Intent parentIntent = stackBuilder.editIntentAt(0);
+                                parentIntent.putExtra("menu", R.id.menu_chat);
                                 PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                                 NotificationCompat.Builder notiBuilder = new NotificationCompat
                                         .Builder(getApplicationContext(),"default_notification_channel_id")
