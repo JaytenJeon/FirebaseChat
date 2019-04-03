@@ -81,7 +81,7 @@ public class FriendDetailActivity extends AppCompatActivity {
         mTextName.setText(friend.getName());
         mTextStatusMessage.setText(friend.getStatusMessage());
         mTextPhoneNumber = findViewById(R.id.text_phone_number);
-        mTextPhoneNumber.setText(friend.getPhoneNumber());
+        mTextPhoneNumber.setText(friend.getPhoneNumber()!=null?friend.getPhoneNumber():"번호가 없습니다");
         mImageCover = findViewById(R.id.image_cover);
         mButtonChat = findViewById(R.id.button_chat);
 
