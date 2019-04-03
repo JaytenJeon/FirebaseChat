@@ -2,6 +2,7 @@ package com.example.firebasechat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class FriendSearchActivity extends AppCompatActivity {
     private LinearLayout mLayoutFriend;
     private ImageView mImageProfile;
     private TextView mTextName;
+    private TextView mTextInfo;
     private Button mButtonAddFriend;
     private LinearLayout mLayoutFriendNotFound;
     private ImageButton mButtonCancelEdit;
@@ -54,14 +56,27 @@ public class FriendSearchActivity extends AppCompatActivity {
         mImageProfile.setClipToOutline(true);
         mLayoutFriend = findViewById(R.id.layout_friend);
         mEditEmail = findViewById(R.id.edit_email);
+        mEditEmail.requestFocus();
+        mEditEmail.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        });
+
+
         mLayoutFriendNotFound = findViewById(R.id.layout_friend_not_found);
         mFirebaseFirestore = FirebaseFirestore.getInstance();
-
+        mTextInfo = findViewById(R.id.text_info);
 
         mButtonCancelEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mEditEmail.setText("");
+                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mEditEmail, 0);
             }
         });
 
@@ -108,9 +123,11 @@ public class FriendSearchActivity extends AppCompatActivity {
                                         if(friend.getUid().equals(mMyProfile.getUid())){
                                             mButtonAddFriend.setEnabled(false);
                                             mButtonAddFriend.setText(R.string.message_cant_add_friend);
+                                            mTextInfo.setVisibility(View.VISIBLE);
                                         }else{
                                             mButtonAddFriend.setEnabled(true);
                                             mButtonAddFriend.setText(R.string.label_button_friend_add);
+                                            mTextInfo.setVisibility(View.GONE);
 
                                         }
                                     }else{
