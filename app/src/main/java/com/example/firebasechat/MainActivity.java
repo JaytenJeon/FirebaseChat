@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         ChatRoomListFragment.OnFragmentInteractionListener,
         MoreFragment.OnFragmentInteractionListener{
     public static User USER_PROFILE;
-
+    public static int MENU_ID = R.id.menu_friend;
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
 
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        int menuId = intent.getIntExtra("menu", R.id.menu_friend);
-        if(menuId == R.id.menu_chat){
+        MENU_ID = intent.getIntExtra("menu", R.id.menu_friend);
+        if(MENU_ID == R.id.menu_chat){
             mBottomNavigationView.getMenu().getItem(1).setChecked(true);
             replaceFragment(mChatRoomListFragment);
         }else {
@@ -122,6 +122,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MENU_ID == R.id.menu_chat){
+            mBottomNavigationView.getMenu().getItem(1).setChecked(true);
+            replaceFragment(mChatRoomListFragment);
+            MENU_ID = R.id.menu_friend;
+        }
     }
 
     @Override

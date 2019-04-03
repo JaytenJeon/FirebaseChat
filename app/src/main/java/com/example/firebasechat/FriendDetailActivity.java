@@ -16,12 +16,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,6 +125,7 @@ public class FriendDetailActivity extends AppCompatActivity {
 //                            Intent parentInent = stackBuilder.editIntentAt(0);
 //                            parentInent.putExtra("menu",R.id.menu_chat);
 //                            stackBuilder.startActivities();
+                            MainActivity.MENU_ID = R.id.menu_chat;
                             startActivity(intent);
                             finish();
                         }
