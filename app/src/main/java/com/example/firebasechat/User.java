@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private String name;
-        private String statusMessage;
+    private String statusMessage;
     private String phoneNumber;
     private String email;
     private String uid;
@@ -53,5 +53,13 @@ public class User implements Serializable {
 
     public Uri getCoverImg() {
         return coverImg;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 }

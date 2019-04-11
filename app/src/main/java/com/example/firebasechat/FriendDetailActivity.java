@@ -3,9 +3,11 @@ package com.example.firebasechat;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -24,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FriendDetailActivity extends AppCompatActivity {
+    public static int REQUEST_CODE = 1;
+
     private TextView mTextName;
     private TextView mTextStatusMessage;
     private ImageView mImageProfile;
@@ -32,11 +37,12 @@ public class FriendDetailActivity extends AppCompatActivity {
     private TextView mLabelEditProfile;
     private TextView mLabelChat;
     private ImageButton mButtonClose;
-    private TextView mTextPhoneNumber;
+    private TextView mTextEmail;
     private ImageButton mButtonChat;
     private float previousY;
     private int originHeight;
     private ConstraintLayout profileLayout;
+    private User mFriend;
 
     private FirebaseFirestore mFirebaseFirestore;
 
@@ -71,17 +77,16 @@ public class FriendDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_friend_detail);
-
         Intent intent = getIntent();
-        User friend = (User) intent.getSerializableExtra("data");
-        int type = (int) intent.getIntExtra("type",-1);
+        mFriend = (User) intent.getSerializableExtra("data");
+        int type = (int) intent.getIntExtra("type",0);
         mTextName = findViewById(R.id.text_name);
-        mTextStatusMessage = findViewById(R.id.profileStatusMessage);
+        mTextStatusMessage = findViewById(R.id.text_status_message);
         mImageProfile = findViewById(R.id.image_profile);
-        mTextName.setText(friend.getName());
-        mTextStatusMessage.setText(friend.getStatusMessage());
-        mTextPhoneNumber = findViewById(R.id.text_phone_number);
-        mTextPhoneNumber.setText(friend.getPhoneNumber()!=null?friend.getPhoneNumber():"번호가 없습니다");
+        mTextName.setText(mFriend.getName());
+        mTextStatusMessage.setText(mFriend.getStatusMessage());
+        mTextEmail = findViewById(R.id.text_email);
+        mTextEmail.setText(mFriend.getEmail());
         mImageCover = findViewById(R.id.image_cover);
         mButtonChat = findViewById(R.id.button_chat);
 
@@ -90,7 +95,7 @@ public class FriendDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String friendUid = friend.getUid();
+                String friendUid = mFriend.getUid();
                 int userCount = myUid.equals(friendUid) ? 1 : 2;
                 mFirebaseFirestore.collection("chatRooms")
                         .whereEqualTo("users."+myUid, true)
@@ -107,7 +112,7 @@ public class FriendDetailActivity extends AppCompatActivity {
                                 chatRoom = chatRooms.get(0);
                             }else{
                                 String myName = MainActivity.USER_PROFILE.getName();
-                                String friendName = friend.getName();
+                                String friendName = mFriend.getName();
                                 String id = myUid +"_"+friendUid;
                                 ArrayList<String> name = new ArrayList<>();
                                 name.add(friendName);
@@ -121,10 +126,7 @@ public class FriendDetailActivity extends AppCompatActivity {
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                             Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                             intent.putExtra("data", chatRoom);
-//                            stackBuilder.addNextIntentWithParentStack(intent);
-//                            Intent parentInent = stackBuilder.editIntentAt(0);
-//                            parentInent.putExtra("menu",R.id.menu_chat);
-//                            stackBuilder.startActivities();
+
                             MainActivity.MENU_ID = R.id.menu_chat;
                             startActivity(intent);
                             finish();
@@ -135,10 +137,10 @@ public class FriendDetailActivity extends AppCompatActivity {
             }
         });
 
-        if(friend.getProfileImg() != null){
+        if(mFriend.getProfileImg() != null){
 //            mImageProfile.setImageURI(friend.getProfileImg());
         }
-        if(friend.getCoverImg() != null){
+        if(mFriend.getCoverImg() != null){
 //            mImageCover.setImageURI(friend.getCoverImg());
 
         }
@@ -146,9 +148,20 @@ public class FriendDetailActivity extends AppCompatActivity {
         profileLayout = findViewById(R.id.profileLayout);
         mImageProfile.setClipToOutline(true);
         mButtonEditProfile = findViewById(R.id.button_edit_profile);
+
+        mButtonEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileEditActivity.class)
+                        .putExtra("data", mFriend)
+                        .putExtra("type", type)
+                );
+                finish();
+            }
+        });
         mLabelEditProfile = findViewById(R.id.label_edit_profile);
         mLabelChat = findViewById(R.id.label_chat);
-        mButtonClose = findViewById(R.id.closeButton);
+        mButtonClose = findViewById(R.id.button_close);
 
         mButtonClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,4 +190,5 @@ public class FriendDetailActivity extends AppCompatActivity {
 
 
     }
+
 }

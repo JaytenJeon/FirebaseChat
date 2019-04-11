@@ -56,7 +56,6 @@
         android:src="@drawable/img_default_profile"
         app:layout_constraintBottom_toBottomOf="@id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline2"
@@ -134,7 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/image_profile" />
 
     <TextView
-        android:id="@+id/text_phone_number"
+        android:id="@+id/text_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -150,7 +149,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_name" />
 
     <TextView
-        android:id="@+id/profileStatusMessage"
+        android:id="@+id/text_status_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -168,7 +167,7 @@
         app:layout_constraintTop_toTopOf="@+id/image_cover" />
 
     <ImageButton
-        android:id="@+id/closeButton"
+        android:id="@+id/button_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
