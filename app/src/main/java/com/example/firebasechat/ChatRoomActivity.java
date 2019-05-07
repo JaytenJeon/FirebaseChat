@@ -22,6 +22,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -69,7 +70,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
         CHATROOM_ID = chatRoom.getId();
-        getSupportActionBar().setTitle(chatRoom.generateChatRoomName());
+        getSupportActionBar().setTitle("a");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
         getSupportActionBar().setElevation(5);
         recyclerView = findViewById(R.id.recycler_message);
@@ -129,9 +130,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                         toId = id;
                     }
                 }
+                DocumentReference userRef = mFirestore.collection("users").document(mUser.getUid());
                 mFirestore.collection("chatRooms")
                         .document(chatRoom.getId()).collection("messages")
-                        .add(new Message(user.getName(), mUser.getUid(), toId, null,content))
+                        .add(new Message(mUser.getUid(), toId, null,content,userRef))
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {

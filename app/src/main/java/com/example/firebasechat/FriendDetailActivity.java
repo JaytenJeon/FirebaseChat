@@ -114,13 +114,10 @@ public class FriendDetailActivity extends AppCompatActivity {
                                 String myName = MainActivity.USER_PROFILE.getName();
                                 String friendName = mFriend.getName();
                                 String id = myUid +"_"+friendUid;
-                                ArrayList<String> name = new ArrayList<>();
-                                name.add(friendName);
-                                name.add(myName);
-                                HashMap<String, Boolean> users = new HashMap<>();
+                                                                HashMap<String, Boolean> users = new HashMap<>();
                                 users.put(myUid, true);
                                 users.put(friendUid, true);
-                                chatRoom = new ChatRoom(name, users, id, null, null, userCount, 0);
+                                chatRoom = new ChatRoom(users, id,"aa", null, null, userCount, 0);
 
                             }
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());

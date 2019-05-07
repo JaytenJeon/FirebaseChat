@@ -20,8 +20,8 @@ import java.util.Set;
 import static java.lang.System.currentTimeMillis;
 
 class ChatRoom implements Serializable {
-    private ArrayList<String> name;
     private String id;
+    private String name;
     private HashMap<String, Boolean> users;
     private Uri profileImg;
     private String latestMessage;
@@ -31,16 +31,20 @@ class ChatRoom implements Serializable {
     public ChatRoom() {
     }
 
-    public ChatRoom(ArrayList<String> name, HashMap<String, Boolean> users, String id,
+    public ChatRoom(HashMap<String, Boolean> users, String id, String name,
                     Uri profileImg, String latestMessage, int userCount, long seconds) {
-        this.name = name;
         this.id = id;
+        this.name = name;
         this.profileImg = profileImg;
         this.users = users;
 
         this.latestMessage = latestMessage;
         this.userCount = userCount;
         this.seconds = seconds;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getUserCount() {
@@ -70,25 +74,6 @@ class ChatRoom implements Serializable {
 
     public String getLatestMessage() {
         return latestMessage;
-    }
-
-    public List<String> getName() {
-        return name;
-    }
-
-    public String generateChatRoomName() {
-        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        Set<String> names= new HashSet<>(getName());
-        if(names.size()>1){
-            for(String name: getName()){
-                if(!name.equals(userName)){
-                    return name;
-                }
-            }
-        }else{
-            return userName;
-        }
-        return null;
     }
 
 

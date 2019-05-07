@@ -7,14 +7,26 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -89,10 +101,42 @@ public class ChatRoomListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             if(mAdapter == null){
-                mAdapter = new ChatRoomRecyclerViewAdapder(mQuery, mListener);
-                mAdapter.startListening();
+                mQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<User> mUsers = new ArrayList<>();
+                        for(DocumentSnapshot document: task.getResult()){
+                            HashMap<String, Boolean> users = (HashMap<String, Boolean>) document.get("users");
+                            if(users.size()==1){
+                                mUsers.add(MainActivity.USER_PROFILE);
+                            }
+                            for(String uid: users.keySet()){
+                                if(!uid.equals(MainActivity.USER_PROFILE.getUid())){
+                                    Log.d("!!!!", "uid is :"+uid);
+                                    FirebaseFirestore.getInstance().collection("users")
+                                            .document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                            mUsers.add(documentSnapshot.toObject(User.class));
+                                        }
+                                    });
+                                }
+
+                            }
+                            Log.d("!!!!!", mUsers.size()+", "+ users.size());
+
+                        }
+
+                        mAdapter = new ChatRoomRecyclerViewAdapder(mQuery, mListener, mUsers);
+                        mAdapter.startListening();
+                        recyclerView.setAdapter(mAdapter);
+
+                    }
+                });
+
             }
             recyclerView.setAdapter(mAdapter);
+
             final int initialTopPosition = recyclerView.getTop();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

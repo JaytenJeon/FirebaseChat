@@ -25,6 +25,7 @@ public class User implements Serializable {
         this.profileImg = profileImg;
         this.coverImg = coverImg;
         this.uid = uid;
+        
     }
 
     public String getUid() {
