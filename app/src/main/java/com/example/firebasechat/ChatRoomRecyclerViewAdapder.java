@@ -21,13 +21,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.ViewHolder> {
     private final ChatRoomListFragment.OnFragmentInteractionListener mListener;
-    private ArrayList<User> mUsers = new ArrayList<>();
-    public ChatRoomRecyclerViewAdapder(Query query, ChatRoomListFragment.OnFragmentInteractionListener listener, ArrayList<User> users) {
+    private HashMap<String, User> mUsers = new HashMap<>();
+    public ChatRoomRecyclerViewAdapder(Query query, ChatRoomListFragment.OnFragmentInteractionListener listener, HashMap<String, User> users) {
         super(query);
         mUsers = users;
         mListener = listener;
@@ -59,10 +60,14 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         ChatRoom item = getSnapshot(i).toObject(ChatRoom.class);
+        Set keyset = item.getUsers().keySet();
+        if (keyset.size() > 1){
+            keyset.remove(MainActivity.USER_PROFILE.getUid());
+        }
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
-        Log.d("!!!!!", mUsers.size() + mUsers.get(0).getName());
-        holder.mTextName.setText(mUsers.get(i).getName());
+        Log.d("!!!!!", mUsers.size() + mUsers.get(keyset.toArray()[0]).getName());
+        holder.mTextName.setText(mUsers.get(keyset.toArray()[0]).getName());
         holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
         holder.mTextDate.setText(item.generateTimeText());
@@ -72,7 +77,7 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onChatItemSelected(holder.mItem);
+                    mListener.onChatItemSelected(holder.mItem, mUsers.get(keyset.toArray()[0]).getName());
                 }
             }
         });

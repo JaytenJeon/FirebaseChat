@@ -104,11 +104,11 @@ public class ChatRoomListFragment extends Fragment {
                 mQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        ArrayList<User> mUsers = new ArrayList<>();
+                        HashMap<String, User> mUsers = new HashMap<>();
                         for(DocumentSnapshot document: task.getResult()){
                             HashMap<String, Boolean> users = (HashMap<String, Boolean>) document.get("users");
                             if(users.size()==1){
-                                mUsers.add(MainActivity.USER_PROFILE);
+                                mUsers.put(MainActivity.USER_PROFILE.getUid(),  MainActivity.USER_PROFILE);
                             }
                             for(String uid: users.keySet()){
                                 if(!uid.equals(MainActivity.USER_PROFILE.getUid())){
@@ -117,7 +117,8 @@ public class ChatRoomListFragment extends Fragment {
                                             .document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                            mUsers.add(documentSnapshot.toObject(User.class));
+                                            User user = documentSnapshot.toObject(User.class);
+                                            mUsers.put(user.getUid(), user);
                                         }
                                     });
                                 }
@@ -158,9 +159,9 @@ public class ChatRoomListFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(ChatRoom chatRoom) {
+    public void onButtonPressed(ChatRoom chatRoom, String name) {
         if (mListener != null) {
-            mListener.onChatItemSelected(chatRoom);
+            mListener.onChatItemSelected(chatRoom, name);
         }
     }
 
@@ -192,6 +193,6 @@ public class ChatRoomListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onChatItemSelected(ChatRoom chatRoom);
+        void onChatItemSelected(ChatRoom chatRoom, String name);
     }
 }

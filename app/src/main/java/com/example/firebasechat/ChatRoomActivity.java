@@ -69,8 +69,9 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
+        String name = intent.getStringExtra("name");
         CHATROOM_ID = chatRoom.getId();
-        getSupportActionBar().setTitle("a");
+        getSupportActionBar().setTitle(name);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorChatRoomBackground)));
         getSupportActionBar().setElevation(5);
         recyclerView = findViewById(R.id.recycler_message);

@@ -117,13 +117,13 @@ public class FriendDetailActivity extends AppCompatActivity {
                                                                 HashMap<String, Boolean> users = new HashMap<>();
                                 users.put(myUid, true);
                                 users.put(friendUid, true);
-                                chatRoom = new ChatRoom(users, id,"aa", null, null, userCount, 0);
+                                chatRoom = new ChatRoom(users, id,friendName, null, null, userCount, 0);
 
                             }
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                             Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                             intent.putExtra("data", chatRoom);
-
+                            intent.putExtra("name", mFriend.getName());
                             MainActivity.MENU_ID = R.id.menu_chat;
                             startActivity(intent);
                             finish();

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -153,9 +152,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onChatItemSelected(ChatRoom chatRoom) {
+    public void onChatItemSelected(ChatRoom chatRoom, String name) {
         Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
         intent.putExtra("data", chatRoom);
+        intent.putExtra("name",name);
         startActivity(intent);
         overridePendingTransition(R.anim.enter,R.anim.exit);
     }
