@@ -67,7 +67,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Intent intent = new Intent();
                                         intent = new Intent(getApplicationContext(), FriendDetailActivity.class);
-
+                                        MainActivity.USER_PROFILE = mUser;
                                         intent.putExtra("data", mUser);
                                         intent.putExtra("type", mType);
                                         startActivity(intent);

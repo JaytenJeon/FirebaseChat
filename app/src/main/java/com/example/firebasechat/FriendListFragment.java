@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -124,10 +125,29 @@ public class FriendListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("!@#!@32", "Friend List on Resume");
+         if(mAdapter.getDefaultList().get(0) != MainActivity.USER_PROFILE){
+            mAdapter = new FriendRecyclerViewAdapter(mQuery, mListener);
+            mAdapter.startListening();
+            View view = getView();
+            if(view instanceof RecyclerView){
+                RecyclerView recyclerView = (RecyclerView) view;
+                recyclerView.setAdapter(mAdapter);
+
+            }
+        }
+
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("!@#!@32", "Friend List on Create View");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friend, container, false);
@@ -138,6 +158,9 @@ public class FriendListFragment extends Fragment {
                 mAdapter = new FriendRecyclerViewAdapter(mQuery, mListener);
                 mAdapter.startListening();
             }
+
+            Log.d("!@#!@32", "Friend List on Create");
+
             recyclerView.setAdapter(mAdapter);
             final int initialTopPosition = recyclerView.getTop();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

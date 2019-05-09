@@ -25,7 +25,15 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
     private FriendListFragment.OnFragmentInteractionListener mListener;
     private List<User> mDefaultList;
 
-    public FriendRecyclerViewAdapter(Query query,  FriendListFragment.OnFragmentInteractionListener listener) {
+    public List<User> getDefaultList() {
+        return mDefaultList;
+    }
+
+    public void setDefaultList(List<User> defaultList) {
+        mDefaultList = defaultList;
+    }
+
+    public FriendRecyclerViewAdapter(Query query, FriendListFragment.OnFragmentInteractionListener listener) {
         super(query);
         mListener = listener;
         mDefaultList = new ArrayList<>();

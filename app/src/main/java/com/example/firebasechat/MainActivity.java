@@ -131,6 +131,18 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(mChatRoomListFragment);
             MENU_ID = R.id.menu_friend;
         }
+
+        FirebaseFirestore.getInstance().collection("users")
+                .document(FirebaseAuth.getInstance().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    USER_PROFILE = document.toObject(User.class);
+                }
+            }
+        });
     }
 
     @Override
