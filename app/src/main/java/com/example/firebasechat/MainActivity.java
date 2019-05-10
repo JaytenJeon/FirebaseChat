@@ -28,16 +28,15 @@ public class MainActivity extends AppCompatActivity
         implements FriendListFragment.OnFragmentInteractionListener,
         ChatRoomListFragment.OnFragmentInteractionListener,
         MoreFragment.OnFragmentInteractionListener{
+
     public static User USER_PROFILE;
     public static int MENU_ID = R.id.menu_friend;
+
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
-
     private FriendListFragment mFriendListFragment = FriendListFragment.newInstance("", "");
     private ChatRoomListFragment mChatRoomListFragment = ChatRoomListFragment.newInstance("", "");
     private MoreFragment mMoreFragment = MoreFragment.newInstance("", "");
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -64,12 +63,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mToolbar = findViewById(R.id.toolbar);
+        mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         Intent intent = getIntent();
         if(intent.hasExtra("userProfile")){
             USER_PROFILE = (User) intent.getSerializableExtra("userProfile");
         }else{
-            FirebaseFirestore.getInstance().collection("users")
+            FirebaseFirestore.getInstance()
+                    .collection("users")
                     .document(FirebaseAuth.getInstance().getUid())
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -81,18 +83,18 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+        MENU_ID = intent.getIntExtra("menu", R.id.menu_friend);
 
-        mToolbar = findViewById(R.id.toolbar);
-        mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        MENU_ID = intent.getIntExtra("menu", R.id.menu_friend);
+
         if(MENU_ID == R.id.menu_chat){
             mBottomNavigationView.getMenu().getItem(1).setChecked(true);
             replaceFragment(mChatRoomListFragment);
         }else {
             replaceFragment(mFriendListFragment);
         }
+
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -132,17 +134,6 @@ public class MainActivity extends AppCompatActivity
             MENU_ID = R.id.menu_friend;
         }
 
-        FirebaseFirestore.getInstance().collection("users")
-                .document(FirebaseAuth.getInstance().getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    USER_PROFILE = document.toObject(User.class);
-                }
-            }
-        });
     }
 
     @Override

@@ -51,6 +51,7 @@ public class ChatRoomListFragment extends Fragment {
     private ChatRoomRecyclerViewAdapder mAdapter;
     private FirebaseFirestore mFirestore;
     private FirebaseUser mUser;
+    private HashMap<String, User> mUsers = new HashMap<>();
     private Query mQuery;
 
     public ChatRoomListFragment() {
@@ -93,8 +94,21 @@ public class ChatRoomListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+//        if(mUsers.get(mUser.getUid()).getName() != MainActivity.USER_PROFILE.getName()){
+//            View view = getView();
+//            if(view instanceof RecyclerView){
+//                RecyclerView recyclerView = (RecyclerView) view;
+//                recyclerView.setAdapter(mAdapter);
+//            }
+//        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         if(view instanceof RecyclerView){
@@ -104,7 +118,6 @@ public class ChatRoomListFragment extends Fragment {
                 mQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        HashMap<String, User> mUsers = new HashMap<>();
                         for(DocumentSnapshot document: task.getResult()){
                             HashMap<String, Boolean> users = (HashMap<String, Boolean>) document.get("users");
                             if(users.size()==1){
@@ -134,6 +147,13 @@ public class ChatRoomListFragment extends Fragment {
 
                     }
                 });
+
+            }else if(mUsers.get(mUser.getUid()).getName() != MainActivity.USER_PROFILE.getName()){
+                Log.d("!!!!", "User Profile is different" + mUsers.get(mUser.getUid()).getName());
+                mUsers.put(mUser.getUid(), MainActivity.USER_PROFILE);
+                mAdapter = new ChatRoomRecyclerViewAdapder(mQuery, mListener, mUsers);
+                mAdapter.startListening();
+                recyclerView.setAdapter(mAdapter);
 
             }
             recyclerView.setAdapter(mAdapter);
