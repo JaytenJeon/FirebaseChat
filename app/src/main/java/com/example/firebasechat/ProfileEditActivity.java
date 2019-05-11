@@ -47,33 +47,36 @@ public class ProfileEditActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_edit_profile:
+
+
+
                 mUser.setName(mEditName.getText().toString());
                 mUser.setStatusMessage(mEditStatusMessage.getText().toString());
                 MainActivity.USER_PROFILE = mUser;
                 FirebaseFirestore.getInstance().collection("users")
                         .document(mUser.getUid())
-                        .set(mUser)
+                        .update("name", mEditName.getText().toString(), "statusMessage", mEditStatusMessage.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                UserProfileChangeRequest profileUpdates
+                                UserProfileChangeRequest profileChangeRequest
                                         = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(mEditName.getText().toString())
                                         .build();
                                 FirebaseAuth.getInstance().getCurrentUser()
-                                        .updateProfile(profileUpdates)
+                                        .updateProfile(profileChangeRequest)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Intent intent = new Intent();
-                                        intent = new Intent(getApplicationContext(), FriendDetailActivity.class);
-                                        MainActivity.USER_PROFILE = mUser;
-                                        intent.putExtra("data", mUser);
-                                        intent.putExtra("type", mType);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Intent intent = new Intent();
+                                                intent = new Intent(getApplicationContext(), FriendDetailActivity.class);
+                                                MainActivity.USER_PROFILE = mUser;
+                                                intent.putExtra("data", mUser);
+                                                intent.putExtra("type", mType);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        });
                             }
                         });
                 return true;

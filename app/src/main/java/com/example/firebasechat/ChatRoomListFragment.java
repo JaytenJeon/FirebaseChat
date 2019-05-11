@@ -148,7 +148,7 @@ public class ChatRoomListFragment extends Fragment {
                     }
                 });
 
-            }else if(mUsers.get(mUser.getUid()).getName() != MainActivity.USER_PROFILE.getName()){
+            }else if(mUsers.get(mUser.getUid()) != null && mUsers.get(mUser.getUid()).getName() != MainActivity.USER_PROFILE.getName()){
                 Log.d("!!!!", "User Profile is different" + mUsers.get(mUser.getUid()).getName());
                 mUsers.put(mUser.getUid(), MainActivity.USER_PROFILE);
                 mAdapter = new ChatRoomRecyclerViewAdapder(mQuery, mListener, mUsers);

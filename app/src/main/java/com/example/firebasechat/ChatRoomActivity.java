@@ -69,6 +69,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final ChatRoom chatRoom = (ChatRoom) intent.getSerializableExtra("data");
+        Log.d("!23123", ""+chatRoom.getUsers().size());
+
         String name = intent.getStringExtra("name");
         CHATROOM_ID = chatRoom.getId();
         getSupportActionBar().setTitle(name);
@@ -134,7 +136,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                 DocumentReference userRef = mFirestore.collection("users").document(mUser.getUid());
                 mFirestore.collection("chatRooms")
                         .document(chatRoom.getId()).collection("messages")
-                        .add(new Message(mUser.getUid(), toId, null,content,userRef))
+                        .add(new Message(mUser.getDisplayName(), mUser.getUid(), toId, null,content,userRef))
                         .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -144,6 +146,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                         });
                 chatRoom.setSeconds(Timestamp.now().toDate().getTime());
                 chatRoom.setLatestMessage(content);
+                Log.d("!23123", ""+chatRoom.getUsers().size());
                 mFirestore.collection("chatRooms").document(chatRoom.getId())
                             .set(chatRoom);
             }

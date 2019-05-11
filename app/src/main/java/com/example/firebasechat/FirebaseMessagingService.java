@@ -54,6 +54,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                                 Log.d("!!!!!", "ChatRoom id is "+chatRoom.getId());
                                 Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                                 intent.putExtra("data", chatRoom);
+                                intent.putExtra("name", data.get("name"));
                                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                                 stackBuilder.addNextIntentWithParentStack(intent);
                                 Intent parentIntent = stackBuilder.editIntentAt(0);

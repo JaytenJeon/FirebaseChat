@@ -26,8 +26,9 @@ public class Message implements Serializable {
     public Message() {
     }
 
-    public Message(String fromUid, String toUid, Uri profileImg, String content,
+    public Message(String name, String fromUid, String toUid, Uri profileImg, String content,
                    DocumentReference userRef){
+        this.name = name;
         this.fromUid = fromUid;
         this.toUid = toUid;
         this.profileImg = profileImg;

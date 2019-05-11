@@ -60,24 +60,37 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         ChatRoom item = getSnapshot(i).toObject(ChatRoom.class);
-        Set keyset = item.getUsers().keySet();
-        if (keyset.size() > 1){
-            keyset.remove(MainActivity.USER_PROFILE.getUid());
+        Log.d("!23123", ""+item.getUsers().size());
+
+        String[] ids = item.getId().split("_");
+        String toId = null;
+        if(item.getUserCount() ==1){
+            toId = MainActivity.USER_PROFILE.getUid();
+        }else{
+            for(String id: ids){
+                if(!id.equals(MainActivity.USER_PROFILE.getUid())){
+                    toId = id;
+                }
+            }
+
         }
+
+
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
-        Log.d("!!!!!", mUsers.size() + mUsers.get(keyset.toArray()[0]).getName());
-        holder.mTextName.setText(mUsers.get(keyset.toArray()[0]).getName());
+        Log.d("!!!!!", mUsers.size() + mUsers.get(toId).getName());
+        holder.mTextName.setText(mUsers.get(toId).getName());
         holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
         holder.mTextDate.setText(item.generateTimeText());
+        String finalToId = toId;
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onChatItemSelected(holder.mItem, mUsers.get(keyset.toArray()[0]).getName());
+                    mListener.onChatItemSelected(holder.mItem, mUsers.get(finalToId).getName());
                 }
             }
         });
