@@ -60,7 +60,6 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         ChatRoom item = getSnapshot(i).toObject(ChatRoom.class);
-        Log.d("!23123", ""+item.getUsers().size());
 
         String[] ids = item.getId().split("_");
         String toId = null;
@@ -75,10 +74,8 @@ public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.V
 
         }
 
-
         final ViewHolder holder = (ViewHolder) viewHolder;
         holder.mItem = item;
-        Log.d("!!!!!", mUsers.size() + mUsers.get(toId).getName());
         holder.mTextName.setText(mUsers.get(toId).getName());
         holder.mTextLatestMessage.setText(item.getLatestMessage());
         holder.mImageProfile.setClipToOutline(true);
