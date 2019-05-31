@@ -35,47 +35,45 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements FriendListFragment.OnFragmentInteractionListener,
+        implements MainContract.View,
+        FriendListFragment.OnFragmentInteractionListener,
         ChatRoomListFragment.OnFragmentInteractionListener,
-        MoreFragment.OnFragmentInteractionListener{
+        MoreFragment.OnFragmentInteractionListener,
+        BottomNavigationView.OnNavigationItemSelectedListener{
 
     public static User USER_PROFILE;
     public static int MENU_ID = R.id.menu_friend;
-
+    private MainPresenter mMainPresenter;
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
     private FriendListFragment mFriendListFragment = FriendListFragment.newInstance("", "");
     private ChatRoomListFragment mChatRoomListFragment = ChatRoomListFragment.newInstance("", "");
     private MoreFragment mMoreFragment = MoreFragment.newInstance("", "");
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            switch (menuItem.getItemId()){
-                case R.id.menu_friend:
-                    replaceFragment(mFriendListFragment);
-                    return true;
-                case R.id.menu_chat:
-                    replaceFragment(mChatRoomListFragment);
-                    Log.d("!!!1", ""+ DummyData.CHAT_ROOM_DATA.size());
-                    return true;
-                case R.id.menu_more:
-                    replaceFragment(mMoreFragment);
-                    return true;
-            }
-            return false;
-        }
-    };
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MENU_ID == R.id.menu_chat){
+            mBottomNavigationView.getMenu().getItem(1).setChecked(true);
+            replaceFragment(mChatRoomListFragment);
+            MENU_ID = R.id.menu_friend;
+        }
+
+    }
+
+
+    @Override
+    public void setView() {
+        mMainPresenter = new MainPresenter(this);
         mToolbar = findViewById(R.id.toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
-
         Intent intent = getIntent();
         if(intent.hasExtra("userProfile")){
             USER_PROFILE = (User) intent.getSerializableExtra("userProfile");
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         MENU_ID = intent.getIntExtra("menu", R.id.menu_friend);
 
         setSupportActionBar(mToolbar);
-        mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         if(MENU_ID == R.id.menu_chat){
             mBottomNavigationView.getMenu().getItem(1).setChecked(true);
@@ -132,17 +130,13 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
-
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(MENU_ID == R.id.menu_chat){
-            mBottomNavigationView.getMenu().getItem(1).setChecked(true);
-            replaceFragment(mChatRoomListFragment);
-            MENU_ID = R.id.menu_friend;
-        }
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
 
     }
 
@@ -179,11 +173,21 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    private void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.menu_friend:
+                replaceFragment(mFriendListFragment);
+                return true;
+            case R.id.menu_chat:
+                replaceFragment(mChatRoomListFragment);
+                Log.d("!!!1", ""+ DummyData.CHAT_ROOM_DATA.size());
+                return true;
+            case R.id.menu_more:
+                replaceFragment(mMoreFragment);
+                return true;
+        }
+        return false;
     }
+
 }
