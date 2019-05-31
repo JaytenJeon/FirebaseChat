@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.view.friend.list;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.firebasechat.adapter.FriendRecyclerViewAdapter;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.friend.search.FriendSearchActivity;
+import com.example.firebasechat.view.main.MainActivity;
+import com.example.firebasechat.view.splash.SplashActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -89,7 +95,7 @@ public class FriendListFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                startActivity(new Intent(getContext(),SplashActivity.class));
+                                startActivity(new Intent(getContext(), SplashActivity.class));
                             }
                         });
                 getActivity().finish();

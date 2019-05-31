@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.view.chat.list;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.firebasechat.adapter.ChatRoomRecyclerViewAdapder;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.ChatRoom;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Nullable;

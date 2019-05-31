@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,13 +10,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 
-import java.util.List;
-
-class MessageRecyclerAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
+public class MessageRecyclerAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
 
     public MessageRecyclerAdapter(Query query) {
         super(query);

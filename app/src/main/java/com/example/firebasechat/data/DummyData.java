@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.data;
 
 
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.data;
 
 import android.net.Uri;
 import android.util.Log;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 import static java.lang.System.currentTimeMillis;
 
-class ChatRoom implements Serializable {
+public class ChatRoom implements Serializable {
     private String id;
     private String name;
     private HashMap<String, Boolean> users;

@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:listitem="@layout/item_friend_child"
-    tools:context=".FriendListFragment">
+    tools:context=".view.friend.list.FriendListFragment">
 
 </android.support.v7.widget.RecyclerView>

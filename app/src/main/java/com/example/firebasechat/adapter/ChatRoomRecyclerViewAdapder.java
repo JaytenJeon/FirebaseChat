@@ -1,29 +1,24 @@
-package com.example.firebasechat;
+package com.example.firebasechat.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.ChatRoom;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.chat.list.ChatRoomListFragment;
+import com.example.firebasechat.view.main.MainActivity;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
-import javax.annotation.Nullable;
 
 public class ChatRoomRecyclerViewAdapder extends FirestoreAdapter<RecyclerView.ViewHolder> {
     private final ChatRoomListFragment.OnFragmentInteractionListener mListener;

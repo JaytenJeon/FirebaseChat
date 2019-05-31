@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.FriendRecyclerHeader;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.friend.list.FriendListFragment;
+import com.example.firebasechat.view.main.MainActivity;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;

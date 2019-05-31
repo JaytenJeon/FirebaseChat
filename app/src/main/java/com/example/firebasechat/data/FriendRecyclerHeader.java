@@ -1,4 +1,6 @@
-package com.example.firebasechat;
+package com.example.firebasechat.data;
+
+import com.example.firebasechat.data.User;
 
 import java.util.List;
 

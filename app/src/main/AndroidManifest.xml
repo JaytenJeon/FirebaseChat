@@ -9,20 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileEditActivity"
+        <activity android:name=".view.profile.ProfileEditActivity"
             android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".FriendDetailActivity"></activity>
+            android:parentActivityName=".view.friend.detail.FriendDetailActivity"></activity>
 
-        <service android:name=".FirebaseMessagingService">
+        <service android:name=".service.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name=".FriendSearchActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".view.friend.search.FriendSearchActivity" />
+        <activity android:name=".view.auth.SignUpActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,14 +31,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatRoomActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".view.chat.ChatRoomActivity"
+            android:parentActivityName=".view.main.MainActivity"
             android:theme="@style/ChatRoomTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".FriendDetailActivity"
+            android:name=".view.friend.detail.FriendDetailActivity"
             android:theme="@style/FriendDetailTheme" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".view.main.MainActivity" />
     </application>
 
 </manifest>

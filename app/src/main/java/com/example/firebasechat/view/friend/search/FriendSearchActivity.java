@@ -1,8 +1,6 @@
-package com.example.firebasechat;
+package com.example.firebasechat.view.friend.search;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;

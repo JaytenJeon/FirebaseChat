@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

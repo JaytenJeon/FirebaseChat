@@ -1,4 +1,4 @@
-package com.example.firebasechat;
+package com.example.firebasechat.view.main;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.firebasechat.view.chat.ChatRoomActivity;
+import com.example.firebasechat.view.chat.list.ChatRoomListFragment;
+import com.example.firebasechat.view.friend.detail.FriendDetailActivity;
+import com.example.firebasechat.view.friend.list.FriendListFragment;
+import com.example.firebasechat.adapter.FriendRecyclerViewAdapter;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.ChatRoom;
+import com.example.firebasechat.data.DummyData;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.more.MoreFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +57,7 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.menu_chat:
                     replaceFragment(mChatRoomListFragment);
-                    Log.d("!!!1", ""+DummyData.CHAT_ROOM_DATA.size());
+                    Log.d("!!!1", ""+ DummyData.CHAT_ROOM_DATA.size());
                     return true;
                 case R.id.menu_more:
                     replaceFragment(mMoreFragment);

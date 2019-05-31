@@ -1,4 +1,4 @@
-    package com.example.firebasechat;
+    package com.example.firebasechat.view.chat;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -16,24 +16,24 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 
+import com.example.firebasechat.adapter.MessageRecyclerAdapter;
+import com.example.firebasechat.R;
+import com.example.firebasechat.data.ChatRoom;
+import com.example.firebasechat.data.Message;
+import com.example.firebasechat.data.User;
+import com.example.firebasechat.view.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-public class ChatRoomActivity extends AppCompatActivity {
+    public class ChatRoomActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private EditText editText;
     private ImageButton buttonSend;
