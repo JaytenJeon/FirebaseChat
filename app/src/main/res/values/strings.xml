@@ -18,7 +18,8 @@
     <string name="label_edit_phone_number">전화번호</string>
     <string name="label_edit_email">이메일</string>
 
-
+    <string name="message_login_success">로그인 성공</string>
+    <string name="message_sign_up_success">회원가입 성공</string>
 
     <string name="message_title_friend_not_found">사용자를 찾을 수 없습니다.</string>
     <string name="message_content_friend_not_found">사용자 이메일을 다시 확인해 주세요. </string>
