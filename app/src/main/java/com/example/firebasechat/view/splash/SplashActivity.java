@@ -16,8 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class SplashActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
+public class SplashActivity extends AppCompatActivity implements SplashContract.View{
+
+    private SplashPresenter mPresenter;
 
     @Override
     protected void onResume() {
@@ -28,31 +29,22 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            FirebaseFirestore.getInstance().collection("users")
-                    .document(currentUser.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    User user = task.getResult().toObject(User.class);
-                    intent.putExtra("userProfile", user);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-
-
-        }else{
-            startActivity(new Intent(this, SignUpActivity.class));
-            finish();
-        }
-
-
-
+        mPresenter = new SplashPresenter(this);
+        mPresenter.onCreate();
 
     }
 
+    @Override
+    public void showMainActivity(User user) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("userProfile", user);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void showSignUpActivity() {
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
+    }
 }
