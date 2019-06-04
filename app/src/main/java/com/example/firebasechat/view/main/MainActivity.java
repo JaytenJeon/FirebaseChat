@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
     private MainPresenter mPresenter;
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
-    private FriendListFragment mFriendListFragment = FriendListFragment.newInstance("", "");
+    private FriendListFragment mFriendListFragment = FriendListFragment.newInstance();
     private ChatRoomListFragment mChatRoomListFragment = ChatRoomListFragment.newInstance("", "");
     private MoreFragment mMoreFragment = MoreFragment.newInstance("", "");
 

@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.iid.InstanceIdResult;
 
 public interface IFirebaseHelper {
@@ -23,4 +24,5 @@ public interface IFirebaseHelper {
     DocumentReference getCurrentUserFcmIdDocumentReference();
     void setCurrentUser(User user);
     User getCurrentUser();
+    Query getFriendsQuery();
 }

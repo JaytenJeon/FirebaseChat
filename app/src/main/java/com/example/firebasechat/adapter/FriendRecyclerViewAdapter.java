@@ -22,28 +22,20 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.ViewHolder> {
+public class FriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements FriendRecyclerViewAdapterContract.View, FriendRecyclerViewAdapterContract.Model{
     public static final int MY_PROFILE = 0;
     public static final int HEADER = 1;
     public static final int OTHER = 2;
 
     private FriendListFragment.OnFragmentInteractionListener mListener;
-    private List<User> mDefaultList;
+    private List<User> mUsers;
 
-    public List<User> getDefaultList() {
-        return mDefaultList;
-    }
-
-    public void setDefaultList(List<User> defaultList) {
-        mDefaultList = defaultList;
-    }
-
-    public FriendRecyclerViewAdapter(Query query, FriendListFragment.OnFragmentInteractionListener listener) {
-        super(query);
+    public FriendRecyclerViewAdapter(FriendListFragment.OnFragmentInteractionListener listener) {
         mListener = listener;
-        mDefaultList = new ArrayList<>();
-        mDefaultList.add(MainActivity.USER_PROFILE);
-        mDefaultList.add(new FriendRecyclerHeader("친구"));
+        mUsers = new ArrayList<>();
+        mUsers.add(MainActivity.USER_PROFILE);
+        mUsers.add(new FriendRecyclerHeader("친구"));
 
     }
 
@@ -69,11 +61,7 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         User item;
-        if(position<2){
-            item = mDefaultList.get(position);
-        }else{
-            item = getSnapshot(position - 2).toObject(User.class);
-        }
+        item = mUsers.get(position);
         switch (getItemViewType(position)){
             case HEADER:
                 final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
@@ -157,7 +145,7 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return super.getItemCount() + mDefaultList.size();
+        return mUsers.size();
     }
 
     @Override
@@ -172,6 +160,23 @@ public class FriendRecyclerViewAdapter extends FirestoreAdapter<RecyclerView.Vie
             default:
                 return position;
         }
+    }
+
+    @Override
+    public void notifyAdapter() {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void addItems(List<User> users) {
+        mUsers.addAll(users);
+    }
+
+    @Override
+    public void reset() {
+        mUsers = new ArrayList<>();
+        mUsers.add(MainActivity.USER_PROFILE);
+        mUsers.add(new FriendRecyclerHeader("친구"));
     }
 
 
