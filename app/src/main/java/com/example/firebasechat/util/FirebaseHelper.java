@@ -1,18 +1,19 @@
 package com.example.firebasechat.util;
 
-import android.util.Log;
-
+import com.example.firebasechat.data.User;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class FirebaseHelper implements IFirebaseHelper {
 
-    public static FirebaseHelper INSTANCE = new FirebaseHelper();
-    private static String USER_COLLECTION = "users";
-
+    private static FirebaseHelper INSTANCE = new FirebaseHelper();
+    private User mCurrentUser = null;
     private FirebaseHelper() {
     }
 
@@ -36,6 +37,11 @@ public class FirebaseHelper implements IFirebaseHelper {
     }
 
     @Override
+    public Task<InstanceIdResult> getFirebaseInstanceId() {
+        return FirebaseInstanceId.getInstance().getInstanceId();
+    }
+
+    @Override
     public String getCurrentUserId() {
         return getFirebaseUser().getUid();
     }
@@ -52,11 +58,26 @@ public class FirebaseHelper implements IFirebaseHelper {
 
     @Override
     public CollectionReference getUserCollectionReference() {
-        return getCollectionReference(USER_COLLECTION);
+        return getCollectionReference("users");
     }
 
     @Override
     public DocumentReference getCurrentUserDocumentReference() {
         return getDocumentReference(getUserCollectionReference(), getCurrentUserId());
+    }
+
+    @Override
+    public DocumentReference getCurrentUserFcmIdDocumentReference() {
+        return getDocumentReference(getCollectionReference("fcmIds"), getCurrentUserId());
+    }
+
+    @Override
+    public void setCurrentUser(User user) {
+        mCurrentUser = user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return mCurrentUser;
     }
 }
