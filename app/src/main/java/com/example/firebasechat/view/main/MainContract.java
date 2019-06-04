@@ -9,6 +9,7 @@ public interface MainContract {
     }
 
     interface Presenter{
-
+        void onCreate();
+        void loadFirebaseInstanceId();
     }
 }

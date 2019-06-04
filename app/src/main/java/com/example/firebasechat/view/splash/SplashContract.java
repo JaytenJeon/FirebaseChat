@@ -4,7 +4,7 @@ import com.example.firebasechat.data.User;
 
 public interface SplashContract {
     interface View{
-        void showMainActivity(User user);
+        void showMainActivity();
         void showSignUpActivity();
     }
 

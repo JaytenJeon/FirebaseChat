@@ -35,16 +35,14 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
     }
 
     @Override
-    public void showMainActivity(User user) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("userProfile", user);
-        startActivity(intent);
+    public void showMainActivity() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 
     @Override
     public void showSignUpActivity() {
-        startActivity(new Intent(this, SignUpActivity.class));
+        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
         finish();
     }
 }

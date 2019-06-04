@@ -62,10 +62,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     }
 
     @Override
-    public void showMainActivity(User user) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.putExtra("userProfile", user);
-        startActivity(intent);
+    public void showMainActivity() {
+        startActivity( new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 }

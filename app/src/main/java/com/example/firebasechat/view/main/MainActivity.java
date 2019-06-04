@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.firebasechat.util.FirebaseHelper;
 import com.example.firebasechat.view.chat.ChatRoomActivity;
 import com.example.firebasechat.view.chat.list.ChatRoomListFragment;
 import com.example.firebasechat.view.friend.detail.FriendDetailActivity;
@@ -23,16 +24,7 @@ import com.example.firebasechat.data.ChatRoom;
 import com.example.firebasechat.data.DummyData;
 import com.example.firebasechat.data.User;
 import com.example.firebasechat.view.more.MoreFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements MainContract.View,
@@ -43,7 +35,8 @@ public class MainActivity extends AppCompatActivity
 
     public static User USER_PROFILE;
     public static int MENU_ID = R.id.menu_friend;
-    private MainPresenter mMainPresenter;
+    private FirebaseHelper mFirebaseHelper = FirebaseHelper.getInstance();
+    private MainPresenter mPresenter;
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigationView;
     private FriendListFragment mFriendListFragment = FriendListFragment.newInstance("", "");
@@ -54,7 +47,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setView();
+        mPresenter = new MainPresenter(this);
+        mPresenter.onCreate();
     }
 
     @Override
@@ -71,28 +65,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void setView() {
-        mMainPresenter = new MainPresenter(this);
         mToolbar = findViewById(R.id.toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        USER_PROFILE = mFirebaseHelper.getCurrentUser();
         Intent intent = getIntent();
-        if(intent.hasExtra("userProfile")){
-            USER_PROFILE = (User) intent.getSerializableExtra("userProfile");
-        }else{
-            FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(FirebaseAuth.getInstance().getUid())
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
-                        DocumentSnapshot document = task.getResult();
-                        USER_PROFILE = document.toObject(User.class);
-                    }
-                }
-            });
-        }
         MENU_ID = intent.getIntExtra("menu", R.id.menu_friend);
-
         setSupportActionBar(mToolbar);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
 
@@ -103,33 +80,7 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(mFriendListFragment);
         }
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (!task.isSuccessful()) {
-                    Log.w("!!!!", "getInstanceId failed", task.getException());
-                    return;
-                }
 
-                // Get new Instance ID token
-                String token = task.getResult().getToken();
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Map<String, Object> data = new HashMap<>();
-                data.put("uid", uid);
-                data.put("fcmId",token);
-                Log.d("!!!!!", uid+": "+token);
-                FirebaseFirestore.getInstance().collection("fcmIds")
-                        .document(uid).set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(!task.isSuccessful()){
-                            return;
-                        }
-
-                    }
-                });
-            }
-        });
     }
 
     @Override

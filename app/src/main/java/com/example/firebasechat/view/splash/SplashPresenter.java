@@ -34,7 +34,8 @@ public class SplashPresenter implements SplashContract.Presenter {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = task.getResult().toObject(User.class);
-                        mView.showMainActivity(user);
+                        mFirebaseHelper.setCurrentUser(user);
+                        mView.showMainActivity();
                     }
                 });
     }

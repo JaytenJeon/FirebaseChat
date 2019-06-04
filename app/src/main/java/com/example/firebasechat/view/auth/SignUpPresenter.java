@@ -46,7 +46,8 @@ public class SignUpPresenter implements SignUpContract.Presenter{
                                 DocumentSnapshot document = task.getResult();
                                 if(document.exists()){
                                     mView.showToast(R.string.message_login_success);
-                                    mView.showMainActivity(document.toObject(User.class));
+                                    mFirebaseHelper.setCurrentUser(document.toObject(User.class));
+                                    mView.showMainActivity();
                                     return;
                                 }
                                 User user = Converter.firebaseUserToUser(mFirebaseHelper.getFirebaseUser());
@@ -56,7 +57,8 @@ public class SignUpPresenter implements SignUpContract.Presenter{
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 mView.showToast(R.string.message_sign_up_success);
-                                                mView.showMainActivity(user);
+                                                mFirebaseHelper.setCurrentUser(user);
+                                                mView.showMainActivity();
                                             }
                                         });
                             }

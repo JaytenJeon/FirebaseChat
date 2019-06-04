@@ -9,7 +9,7 @@ public interface SignUpContract {
         void showAuthUI();
         void showToast(int message);
         void finishActivity();
-        void showMainActivity(User user);
+        void showMainActivity();
     }
 
     interface Presenter{
